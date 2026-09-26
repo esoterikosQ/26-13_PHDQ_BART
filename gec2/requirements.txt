@@ -1,0 +1,11 @@
+# gec2 (plan2.md) 환경. torch는 CUDA 빌드에 맞춰 먼저 설치한다:
+#   pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+transformers==4.57.6
+tokenizers>=0.22,<0.23
+pytorch-lightning==2.6.6
+accelerate==1.15.0
+sentencepiece==0.2.2
+protobuf
+safetensors
+numpy
+scipy

@@ -1,0 +1,14 @@
+# plan2.md §5 단계 3: lr 탐색 (korean_learner, seed 0, 후보당 3개 값). 검증 GLEU로 선택.
+# model                     tag              data            run_id          seed lr    micro gen
+skt/kobart-base-v1          kobart-base-v1   korean_learner  lr1e-5_seed0    0    1e-5  64    64
+skt/kobart-base-v1          kobart-base-v1   korean_learner  lr3e-5_seed0    0    3e-5  64    64
+skt/kobart-base-v1          kobart-base-v1   korean_learner  lr5e-5_seed0    0    5e-5  64    64
+paust/pko-t5-base           pko-t5-base      korean_learner  lr1e-4_seed0    0    1e-4  32    64
+paust/pko-t5-base           pko-t5-base      korean_learner  lr3e-4_seed0    0    3e-4  32    64
+paust/pko-t5-base           pko-t5-base      korean_learner  lr5e-4_seed0    0    5e-4  32    64
+facebook/mbart-large-50     mbart-large-50   korean_learner  lr1e-5_seed0    0    1e-5  32    64
+facebook/mbart-large-50     mbart-large-50   korean_learner  lr3e-5_seed0    0    3e-5  32    64
+facebook/mbart-large-50     mbart-large-50   korean_learner  lr5e-5_seed0    0    5e-5  32    64
+paust/pko-t5-large          pko-t5-large     korean_learner  lr1e-4_seed0    0    1e-4  16    32
+paust/pko-t5-large          pko-t5-large     korean_learner  lr3e-4_seed0    0    3e-4  16    32
+paust/pko-t5-large          pko-t5-large     korean_learner  lr5e-4_seed0    0    5e-4  16    32
