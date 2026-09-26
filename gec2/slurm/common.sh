@@ -1,13 +1,20 @@
-# sbatch 스크립트 공통: 경로 불러오기, 환경 활성화, GPU·task 수 확인, 실행 정보 저장.
+# sbatch 스크립트 공통: 경로 불러오기, conda 환경 활성화, 데이터·GPU·task 수 확인, 실행 정보 저장.
 set -euo pipefail
 HERE=${SLURM_SUBMIT_DIR:-$(pwd)}
-source "$HERE/gec2/slurm/paths.local.sh" || { echo "gec2/slurm/paths.local.sh 없음 (paths.example.sh 참고). 저장소 루트에서 제출할 것"; exit 1; }
+source "$HERE/gec2/slurm/paths.sh"
+[ -f "$HERE/gec2/slurm/paths.local.sh" ] && source "$HERE/gec2/slurm/paths.local.sh"
 cd "$REPO"
-activate_env
+set +u; activate_env; set -u   # conda activate 스크립트는 정의되지 않은 변수를 참조함
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True TOKENIZERS_PARALLELISM=false
+for d in korean_learner native lang8 union; do
+  for f in ${d}_train.txt ${d}_val.txt ${d}_test.txt ${d}_test.m2; do
+    [ -f "$DATA_ROOT/$d/$f" ] || { echo "오류: 데이터 없음 $DATA_ROOT/$d/$f"; exit 1; }
+  done
+done
+[ -f "$MODEL_DIR/config.json" ] || { echo "오류: 모델 없음 $MODEL_DIR"; exit 1; }
 NGPU=$(nvidia-smi -L | wc -l)
 NTASK=${SLURM_NTASKS_PER_NODE:-${SLURM_NTASKS:-1}}
-echo "[$(TZ=Asia/Seoul date '+%F %T')] job $SLURM_JOB_ID on $(hostname) partition=${SLURM_JOB_PARTITION:-?} GPU=$NGPU tasks=$NTASK commit=$(git rev-parse --short HEAD)"
+echo "[$(TZ=Asia/Seoul date '+%F %T')] job ${SLURM_JOB_ID:-} on $(hostname) partition=${SLURM_JOB_PARTITION:-?} GPU=$NGPU tasks=$NTASK commit=$(git rev-parse --short HEAD) python=$(which python3)"
 nvidia-smi --query-gpu=index,name,memory.total,driver_version --format=csv
 if [ "$NTASK" != "$NGPU" ]; then
   echo "오류: --ntasks-per-node($NTASK)는 GPU 수($NGPU)와 같아야 함 (Lightning이 srun task마다 GPU 1개 사용)"; exit 1

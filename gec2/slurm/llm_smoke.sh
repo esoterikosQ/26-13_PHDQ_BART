@@ -1,15 +1,5 @@
-#!/bin/bash
-#SBATCH --job-name=gec2-llm-smoke
-#SBATCH --nodes=1
-#SBATCH --time=01:00:00
-#SBATCH --output=logs/slurm/%x_%j.out
-# --time 근거: 모델 로드 약 2분 + 메모리 측정 8회(각 1–2분) + native 512줄 1 epoch 학습·검증 512줄·테스트 256줄(약 5분 이하 예상) + 여유.
-#
-# plan2 §4 스모크: (1) 최장 문장 batch로 micro batch·생성 batch별 최대 메모리 측정 (2) native 512줄 1 epoch 학습·검증·테스트.
-# 파티션·GPU·comment·task 수는 제출 명령에서 지정한다 (Neuron 실사례 확인 전에는 스크립트에 고정하지 않음, plan2 §0-1).
-#   mkdir -p logs/slurm
-#   sbatch -p <partition> --gres=gpu:<N> --ntasks-per-node=<N> --cpus-per-task=<C> \
-#          --comment="field=<field>;appl=pytorch" gec2/slurm/llm_smoke.sbatch
+# plan2 §4 스모크 본문 (a100x2_smoke.sbatch / h200x1_smoke.sbatch가 호출).
+# (1) 최장 문장 batch로 micro batch·생성 batch별 최대 메모리 측정 (2) native 512줄 1 epoch 학습·검증·테스트.
 source gec2/slurm/common.sh
 RUN_ID=smoke_${NGPU}gpu_${SLURM_JOB_ID}
 RUN_DIR=$OUT_ROOT/kanana-1.5-2.1b/native/$RUN_ID
