@@ -7,3 +7,4 @@ outputs/
 *.ckpt
 outputs2/
 .venv-gec2/
+gec2/slurm/paths.local.sh

@@ -606,7 +606,7 @@ def main(kind):
                               save_on_train_epoch_end=True, auto_insert_metric_name=False)
 
     def make_trainer(callbacks):
-        strategy = DDPStrategy(find_unused_parameters=False) if world > 1 else 'auto'
+        strategy = DDPStrategy(find_unused_parameters=False, gradient_as_bucket_view=True) if world > 1 else 'auto'
         return pl.Trainer(accelerator=args.accelerator, devices=args.devices, num_nodes=args.num_nodes, strategy=strategy,
                           precision=args.precision, max_epochs=args.max_epochs, accumulate_grad_batches=accum,
                           gradient_clip_val=args.clip, gradient_clip_algorithm='norm', num_sanity_val_steps=0,
