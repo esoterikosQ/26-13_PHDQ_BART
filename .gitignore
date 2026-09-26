@@ -2,10 +2,25 @@
 .venv/
 __pycache__/
 *.pyc
+
+/logs/*
+!/logs/slurm/
+>>>>>>> refs/remotes/origin/main
 outputs/
 *.ckpt
 outputs2/
 .venv-gec2/
 gec2/slurm/paths.local.sh
+<<<<<<< HEAD
 .cache/
 .cache/
+
+
+neuron_outputs/**/ckpt/
+*.safetensors
+*.bin
+*.pt
+neuron_outputs/**/source.txt
+neuron_outputs/**/reference.txt
+neuron_outputs/**/gold_*.m2
+>>>>>>> refs/remotes/origin/main
