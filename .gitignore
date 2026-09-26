@@ -1,0 +1,7 @@
+# 로컬 환경·산출물 (재현 작업)
+.venv/
+__pycache__/
+*.pyc
+logs/
+outputs/
+*.ckpt
