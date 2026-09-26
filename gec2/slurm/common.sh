@@ -5,8 +5,12 @@ HERE=${SLURM_SUBMIT_DIR:-$(pwd)}   # 제출 위치 = 저장소 루트여야 함 
 source "$HERE/gec2/slurm/paths.sh"
 [ -f "$HERE/gec2/slurm/paths.local.sh" ] && source "$HERE/gec2/slurm/paths.local.sh"
 cd "$REPO"
-set +u; activate_env || exit 1; set -u   # conda activate 스크립트는 정의되지 않은 변수를 참조함
-export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True TOKENIZERS_PARALLELISM=false
+require_job "sbatch gec2/slurm/<a100x2|h200x1>_<smoke|train>.sbatch"
+# conda 스크립트는 set -e/-u에서 중간에 멈출 수 있으므로 끄고 활성화한다
+set +eu; activate_env; rc=$?; set -eu
+[ $rc -eq 0 ] || exit 1
+limit_threads
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 for d in korean_learner native lang8 union; do
   for f in ${d}_train.txt ${d}_val.txt ${d}_test.txt ${d}_test.m2; do
     [ -f "$DATA_ROOT/$d/$f" ] || { echo "오류: 데이터 없음 $DATA_ROOT/$d/$f"; exit 1; }

@@ -40,13 +40,15 @@ hf download kakaocorp/kanana-1.5-2.1b-instruct-2505 \
 echo "CONDA_BASE=$(conda info --base)" >> gec2/slurm/paths.local.sh
 ```
 
-사전 점검 (§4, 토크나이저 기반, GPU 불필요; conda·데이터·모델 경로도 함께 확인됨):
+**로그인 노드에서는 python 계산을 하지 않는다**(공유 노드 규칙). 로그인 노드에서 하는 일은 `git pull`, `sbatch`, `share_results.sh`, 모델 내려받기뿐이다. 계산 스크립트(`precheck.sh`, `llm_*.sh`)는 작업 밖에서 실행하면 바로 멈추게 되어 있다.
+
+사전 점검(§4, 토크나이저 기반)은 CPU 작업으로 제출한다. 스모크 작업도 시작할 때 같은 점검을 한다.
 
 ```bash
-bash gec2/slurm/precheck.sh      # 결과: /scratch/r984a02/phdq_bart/outputs2/precheck/kanana-1.5-2.1b.json
+sbatch gec2/slurm/precheck.sbatch   # cpu 파티션, 코어 4, 30분 → logs/slurm/gec2-precheck_<jobid>.out
 ```
 
-itcerdo 결과와 같아야 한다: 원문 복원 100%, unk 0, 최대 입력+출력 342 토큰. 실패하면 화면에 나온 `오류:` 줄을 알려 준다.
+itcerdo 결과와 같아야 한다: 데이터 줄 수(korean_learner 19,898 / 4,264 / 4,265, native 12,292 / 2,634 / 2,634, lang8 76,692 / 16,434 / 16,434, union 108,883 / 23,333 / 23,334), 원문 복원 100%, unk 0, 최대 입력 181·출력 161 토큰.
 
 ## 2. 스모크 (GPU 확인 + 메모리 측정 + 512줄 1 epoch)
 

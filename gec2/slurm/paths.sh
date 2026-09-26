@@ -1,5 +1,6 @@
 # Neuron 경로·환경 (ssh.md: 작업 디렉토리 /scratch/r984a02/phdq_bart). 값을 바꾸려면 같은 폴더에 paths.local.sh를
 # 만들어 덮어쓴다(git에 올라가지 않음). Neuron에서는 추적 파일을 직접 고치지 않는다(수정은 GitHub로, plan2 §0).
+# 로그인 노드에서는 python 계산(모델·데이터 처리)을 하지 않는다: 공유 노드 규칙. 계산은 모두 sbatch 작업으로.
 BASE=/scratch/r984a02/phdq_bart
 REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)   # 이 파일이 있는 저장소 루트 (clone 위치와 무관)
 DATA_ROOT=$BASE/data/Preprocessed                        # <data>/<data>_{train,val,test}.txt, <data>_test.m2
@@ -26,4 +27,13 @@ activate_env() {
   conda activate "$CONDA_ENV" || { echo "오류: conda activate $CONDA_ENV 실패"; return 1; }
   python3 -c "import torch, transformers, pytorch_lightning" 2>/dev/null \
     || { echo "오류: $CONDA_ENV 환경에 torch/transformers/pytorch_lightning이 없음 (gec2/requirements.txt)"; return 1; }
+}
+
+require_job() {   # 로그인 노드에서 계산 스크립트를 직접 실행하지 못하게 막는다
+  [ -n "${SLURM_JOB_ID:-}" ] || { echo "오류: 로그인 노드에서 실행하지 말 것. sbatch로 제출 ($1)"; exit 1; }
+}
+
+limit_threads() {   # 할당받은 CPU 수만 쓰도록 (토크나이저 Rust 스레드·OpenMP·MKL)
+  local n=${SLURM_CPUS_PER_TASK:-4}
+  export OMP_NUM_THREADS=$n MKL_NUM_THREADS=$n RAYON_NUM_THREADS=$n RAYON_RS_NUM_CPUS=$n TOKENIZERS_PARALLELISM=false
 }

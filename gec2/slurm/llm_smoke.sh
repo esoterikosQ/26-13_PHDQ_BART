@@ -1,8 +1,12 @@
 # plan2 §4 스모크 본문 (a100x2_smoke.sbatch / h200x1_smoke.sbatch가 호출).
-# (1) 최장 문장 batch로 micro batch·생성 batch별 최대 메모리 측정 (2) native 512줄 1 epoch 학습·검증·테스트.
+# (0) 사전 점검 (1) 최장 문장 batch로 micro batch·생성 batch별 최대 메모리 측정 (2) native 512줄 1 epoch 학습·검증·테스트.
 source gec2/slurm/common.sh
 RUN_ID=smoke_${NGPU}gpu_${SLURM_JOB_ID}
 RUN_DIR=$OUT_ROOT/kanana-1.5-2.1b/native/$RUN_ID
+
+echo "== 0) 사전 점검 (§4, 토크나이저 기반)"
+python3 -m gec2.precheck --model "$MODEL_DIR" --model_tag kanana-1.5-2.1b --kind llm --data_root "$DATA_ROOT" \
+  --out "$OUT_ROOT/precheck" || { echo "오류: 사전 점검 실패"; exit 1; }
 
 echo "== 1) 메모리 측정 (GPU 1개, 최장 문장 batch)"
 for spec in "8 32" "16 64" "8 32 --gradient_checkpointing" "16 64 --gradient_checkpointing" "32 64 --gradient_checkpointing"; do
