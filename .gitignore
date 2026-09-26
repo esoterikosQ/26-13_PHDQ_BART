@@ -1,21 +1,19 @@
 # 로컬 환경·산출물 (재현 작업)
 .venv/
+.venv-gec2/
+.cache/
 __pycache__/
 *.pyc
+outputs/
+outputs2/
+*.ckpt
+gec2/slurm/paths.local.sh
 
+# 로그: slurm 로그(logs/slurm/)만 올린다
 /logs/*
 !/logs/slurm/
->>>>>>> refs/remotes/origin/main
-outputs/
-*.ckpt
-outputs2/
-.venv-gec2/
-gec2/slurm/paths.local.sh
-<<<<<<< HEAD
-.cache/
-.cache/
 
-
+# Neuron 결과(neuron_outputs/)는 로그·점수·출력만 올리고, 체크포인트와 데이터 원문 사본은 제외
 neuron_outputs/**/ckpt/
 *.safetensors
 *.bin
@@ -23,4 +21,3 @@ neuron_outputs/**/ckpt/
 neuron_outputs/**/source.txt
 neuron_outputs/**/reference.txt
 neuron_outputs/**/gold_*.m2
->>>>>>> refs/remotes/origin/main

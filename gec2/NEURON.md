@@ -82,7 +82,7 @@ RESUME=1 sbatch gec2/slurm/a100x2_train.sbatch korean_learner 1e-5 0
 - 재개는 `ckpt/last.ckpt`(모델·옵티마이저·스케줄러·step·조기 종료 상태)에서 이어 가고, 테스트는 `ckpt/best`(최고 검증 GLEU)로 한다.
 - `train_state.json`의 `stop_reason`이 `early_stop` 또는 `max_epochs`면 학습과 테스트까지 끝난 것이다. 비어 있으면 작업 분할로 멈춘 것이므로 `RESUME=1`로 다시 제출한다.
 - 같은 run은 처음 시작한 GPU 구성으로 이어 간다(A100 × 2로 시작했으면 A100 × 2로 재개).
-- batch 조정은 환경변수로: `MICRO=16 GEN_BATCH=64 GC= sbatch ...` (`GC=`는 gradient checkpointing 끄기). 전역 batch는 64로 고정된다.
+- batch 기본값은 스모크 측정으로 정했다: GPU당 micro 16, 생성 batch 64, gradient checkpointing 끔(전역 batch 64 고정). 메모리가 부족하면 `GC=--gradient_checkpointing sbatch ...` 또는 `MICRO=8 GEN_BATCH=32 sbatch ...`.
 
 ## 4. 공유할 것 (run마다)
 

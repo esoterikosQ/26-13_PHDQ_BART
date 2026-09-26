@@ -657,6 +657,7 @@ def main(kind):
     best_dir = f'{run_dir}/ckpt/best'
     cls = AutoModelForSeq2SeqLM if kind == 'seq2seq' else AutoModelForCausalLM
     best = cls.from_pretrained(best_dir)
-    tm = GecModule(args, best, Formatter(AutoTokenizer.from_pretrained(best_dir), best.config, kind), run_dir, kind)
+    # 토크나이저는 원본 모델 것을 쓴다 (학습 중 인코딩과 같고, 재저장본 로딩 경고를 피함)
+    tm = GecModule(args, best, Formatter(AutoTokenizer.from_pretrained(args.model), best.config, kind), run_dir, kind)
     tm.st = state
     make_trainer([]).test(tm, dataloaders=test_loader)
