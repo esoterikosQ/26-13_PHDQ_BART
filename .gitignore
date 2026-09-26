@@ -2,9 +2,19 @@
 .venv/
 __pycache__/
 *.pyc
-logs/
+/logs/*
+!/logs/slurm/
 outputs/
 *.ckpt
 outputs2/
 .venv-gec2/
 gec2/slurm/paths.local.sh
+
+# Neuron 결과(neuron_outputs/)는 로그·점수·출력만 올리고, 체크포인트와 데이터 원문 사본은 제외
+neuron_outputs/**/ckpt/
+*.safetensors
+*.bin
+*.pt
+neuron_outputs/**/source.txt
+neuron_outputs/**/reference.txt
+neuron_outputs/**/gold_*.m2

@@ -28,7 +28,7 @@
 └── .cache/                    # HF·pip·torch 캐시, 레거시 토크나이저
 ```
 
-`<data>`는 `korean_learner`, `native`, `lang8`, `union` 중 하나다. 파일은 탭 구분 `소스\t타겟` 형식이며, 저자 README의 데이터 준비 절차(`train_split`, `random_state=1`)로 만든다.
+`<data>`는 `korean_learner`, `native`, `lang8`, `union` 중 하나다. 파일은 탭 구분 `소스\t타겟` 형식이며, 저자 README(`docs/ORIGINAL_README.md`)의 데이터 준비 절차(`train_split`, `random_state=1`)로 만든다.
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate

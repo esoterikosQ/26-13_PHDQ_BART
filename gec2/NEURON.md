@@ -4,8 +4,8 @@
 
 **파일 주고받기 규칙 (plan2 §0)**
 - 코드·스크립트 수정은 GitHub로만 한다: Claude가 GitHub `main`에 올리고 → Neuron·itcerdo에서 `git pull`. Neuron에서 추적 파일을 직접 고치지 않는다(고칠 게 있으면 알려 주면 반영). Neuron 전용 값은 git에 올라가지 않는 `gec2/slurm/paths.local.sh`에 둔다.
-- 결과는 `bash gec2/slurm/share_results.sh`로 GitHub에 올린다(체크포인트·데이터 원문 사본 제외, `results/neuron/`). itcerdo·Claude는 `git pull`로 받는다.
-- **데이터셋과 체크포인트는 GitHub로 옮기지 않는다.** 데이터는 신청서 동의·비상업 조건이고, 체크포인트는 GitHub 파일 한도(100MB)를 넘는다. 저장소가 공개 상태면 `share_results.sh`가 올리지 않고 멈춘다.
+- 결과는 `bash gec2/slurm/share_results.sh`로 push한다(`git add` → commit → push만 함). 무엇이 올라갈지는 `.gitignore`가 정한다: `logs/slurm/`과 `neuron_outputs/`의 로그·설정·점수·출력만 올라가고, 체크포인트와 데이터 원문 사본은 제외된다. itcerdo·Claude는 `git pull`로 받는다.
+- 데이터셋·체크포인트처럼 GitHub에 올리지 않는 파일은 사용자가 직접 옮긴다.
 - `git pull`은 작업이 대기 중이거나 끝났을 때 한다. 작업 스크립트 본문(`llm_*.sh`, `common.sh`, `paths.sh`)은 실행 시점에 읽히므로, 실행 중에 바꾸면 그 작업이 깨질 수 있다.
 
 경로는 `gec2/slurm/paths.sh`에 있다. 다르면 `gec2/slurm/paths.local.sh`에 같은 변수를 적어 덮어쓴다.
@@ -16,8 +16,8 @@
 | 데이터 | `/scratch/r984a02/phdq_bart/data/Preprocessed/<data>/` (없으면 `data/<data>/`) |
 | 모델 | `/scratch/r984a02/phdq_bart/models/kanana-1.5-2.1b-instruct-2505` |
 | conda 환경 | 이름 `phdq_bart` (`CONDA_ENV`) |
-| 출력 | `/scratch/r984a02/phdq_bart/outputs2/kanana-1.5-2.1b/<data>/<run_id>/` |
-| slurm 로그 | 저장소 루트의 `logs/slurm/<작업이름>_<jobid>.out` (git에는 안 올라감; 작업이 끝나면 run 디렉토리 `slurm/`에도 복사) |
+| 출력 | 저장소 안 `neuron_outputs/kanana-1.5-2.1b/<data>/<run_id>/` (체크포인트 `ckpt/`는 git 제외) |
+| slurm 로그 | 저장소 루트의 `logs/slurm/<작업이름>_<jobid>.out` (git에 올라감) |
 
 ## 1. 한 번만 하는 준비 (로그인 노드)
 
@@ -64,7 +64,7 @@ cd /scratch/r984a02/phdq_bart/26-13_PHDQ_BART      # 반드시 저장소 루트�
 sbatch gec2/slurm/a100x2_smoke.sbatch               # A100이 막히면: sbatch gec2/slurm/h200x1_smoke.sbatch
 ```
 
-끝나면 `bash gec2/slurm/share_results.sh`로 올린다(slurm 로그 `logs/slurm/gec2-a100x2_smoke_<jobid>.out`와 run 디렉토리 `outputs2/kanana-1.5-2.1b/native/smoke_*`가 함께 올라감). 이 결과로 GPU 메모리(40/80GB), micro batch·생성 batch·gradient checkpointing 여부, 대표 epoch 작업의 `--time`을 정해 스크립트를 갱신한다.
+끝나면 `bash gec2/slurm/share_results.sh`로 올린다(slurm 로그 `logs/slurm/gec2-a100x2_smoke_<jobid>.out`와 run 디렉토리 `neuron_outputs/kanana-1.5-2.1b/native/smoke_*`). 이 결과로 GPU 메모리(40/80GB), micro batch·생성 batch·gradient checkpointing 여부, 대표 epoch 작업의 `--time`을 정해 스크립트를 갱신한다.
 
 ## 3. 대표 epoch 측정 → 본 실행
 
@@ -86,7 +86,7 @@ RESUME=1 sbatch gec2/slurm/a100x2_train.sbatch korean_learner 1e-5 0
 
 ## 4. 공유할 것 (run마다)
 
-작업이 끝날 때마다 로그인 노드에서 `bash gec2/slurm/share_results.sh`를 실행한다. run 디렉토리에서 `ckpt/`(재개용 약 25GB, 평가용 약 8GB)와 데이터 원문 사본(`source.txt`, `reference.txt`)을 뺀 나머지가 `results/neuron/runs/`로, slurm 로그가 `results/neuron/slurm_logs/`로 올라간다.
+작업이 끝날 때마다 로그인 노드에서 `bash gec2/slurm/share_results.sh`를 실행한다. `.gitignore` 기준으로 run 디렉토리에서 `ckpt/`(재개용 약 25GB, 평가용 약 8GB)와 데이터 원문 사본(`source.txt`, `reference.txt`)을 뺀 나머지와 `logs/slurm/*.out`이 올라간다.
 
 | 파일 | 내용 |
 | --- | --- |
@@ -95,8 +95,6 @@ RESUME=1 sbatch gec2/slurm/a100x2_train.sbatch korean_learner 1e-5 0
 | `check_leak.json`, `check_train_mode.json` | 누설·학습 모드 검사 |
 | `train_steps.jsonl`, `epochs.jsonl` | step별 loss·lr, epoch별 검증 loss·GLEU·학습/검증 시간·GPU별 최대 메모리·조기 종료 상태 |
 | `val/epochNN/`, `test/` | 생성 결과와 점수 (`hypothesis.txt`, `gleu.txt`, `m2score.txt`, `scores.json`) |
-| `slurm/` | 작업 스크립트, slurm 로그, nvidia-smi |
+| `slurm/` | 작업 스크립트, nvidia-smi |
 
-사전 점검 결과(`outputs2/precheck/`)도 같은 스크립트로 올라간다.
-
-GitHub에 올리려면 Neuron에서 이 저장소에 push할 수 있는 인증이 필요하다. 이 저장소에만 쓰기 권한이 있는 deploy key나 fine-grained token을 권한다.
+사전 점검 결과(`neuron_outputs/precheck/`)도 같이 올라간다.
