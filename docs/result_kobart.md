@@ -141,7 +141,7 @@ python3 tools/summarize_runs.py logs/runs.log <tag>                     # 3-seed
 
 ## 8. 코드와 보관 위치
 
-- **코드**: https://github.com/esoterikosQ/26-13_PHDQ_BART (`main`). 저자 저장소 이력(`dfe0af9`) 위에 재현 코드 커밋과 문서 커밋을 올렸다. 환경 준비·실행 방법은 저장소의 `REPRODUCTION.md`, 이 문서와 `plan.md`·`log.md`는 `docs/`에 있다.
+- **코드**: https://github.com/esoterikosQ/26-13_PHDQ_BART (`main`). 첫 커밋은 저자 코드(`soyoung97/Standard_Korean_GEC` `dfe0af9`)를 가져온 것이고, 그 위에 재현 코드와 문서 커밋이 있다. 저자 README에 GitHub 토큰 형태의 문자열이 있어 GitHub push 보호에 막혔기 때문에, 저자 이력은 가져오지 않고 해당 문자열만 지운 상태로 가져왔다(나머지 코드는 동일). 환경 준비·실행 방법은 저장소의 `REPRODUCTION.md`, 이 문서와 `plan.md`·`log.md`는 `docs/`에 있다.
 - **실행 스크립트**는 저장소 안 `tools/`로 옮겼다(이전 위치 `~/projects/phdq_bart/tools/`는 삭제). `log.md`의 과거 명령에 나오는 `../tools/…`는 당시 경로다.
 - **저자 체크포인트** run 122는 `~/projects/phdq_bart/author_ckpt/122/`에, transformers 4.0.0 비교 환경은 `~/projects/phdq_bart/.venv-tf400`에 있다.
 - 체크포인트·데이터·로그는 저장소에 넣지 않았다(itcerdo에만 있음).

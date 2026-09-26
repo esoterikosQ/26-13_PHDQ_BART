@@ -519,3 +519,22 @@ git checkout -b skt-kobart-v1-repro && git add .gitignore REPRODUCTION.md run.py
 - 스크립트 경로: `~/projects/phdq_bart/...` 절대경로 → 저장소 루트 기준(`../data/Preprocessed`, `outputs/tfcmp`, 레거시 파일은 `KOBART_LEGACY_DIR` 또는 `../.cache/kobart_legacy`). `run_one.sh`/`run_all.sh`는 `tools/` 기준. `plan.md`·`result_kobart.md`의 명령도 `tools/…`로 수정.
 - 저장소에 넣지 않은 것: `.venv`, `logs/`, `outputs/`, 체크포인트, 데이터, 논문 PDF, `ssh.md`. 커밋 전 문서에서 토큰·비밀번호·IP 패턴 검사(해당 없음).
 - 원격: https://github.com/esoterikosQ/26-13_PHDQ_BART (빈 저장소). itcerdo에는 GitHub 인증이 없어 gsm에서 push.
+
+### 11:10–11:25 · GitHub push [gsm, itcerdo]
+
+```bash
+git clone -b skt-kobart-v1-repro itcerdo:projects/phdq_bart/Standard_Korean_GEC push_repo   # gsm 스크래치
+git remote set-url origin https://github.com/esoterikosQ/26-13_PHDQ_BART.git
+git push origin skt-kobart-v1-repro:main   # 거부: GH013 push protection
+```
+
+- 거부 원인: **저자 저장소 이력의 README에 GitHub 개인 액세스 토큰(`ghp_…`) 형태의 문자열**(“original agreement form” 링크 자리, 현재 README 101행 포함 5개 커밋). 우리 코드와 무관.
+- 조치: 비밀 허용(unblock)은 하지 않고 이력을 새로 구성 — 저자 코드 `dfe0af9`를 토큰 문자열만 설명 문구로 바꿔 단일 커밋으로 가져오고(`acc6dea`), 재현 코드(`7f5c2ec`)·문서(`2bb2094`) 커밋을 그 위에 cherry-pick. 세 커밋 전체에서 토큰 패턴 검사 통과, 원래 브랜치와의 차이는 README 1줄.
+
+```bash
+git checkout --orphan main dfe0af9   # README 토큰 링크 치환 후 커밋, 이후 cherry-pick e4a163c 36b7844
+git push origin main:main            # 성공, main = 2bb2094
+```
+
+- itcerdo 작업 저장소: remote `phdq` 추가, `main`을 `phdq/main` 추적으로 전환(작업 트리는 README 1줄 외 동일). 이전 로컬 브랜치 `skt-kobart-v1-repro`(저자 이력 포함)는 로컬에만 남음.
+- 이후 문서 갱신은 추가 커밋으로 올림.
