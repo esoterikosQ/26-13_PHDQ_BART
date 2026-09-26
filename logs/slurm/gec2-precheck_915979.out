@@ -1,0 +1,11 @@
+==========================================
+SLURM_JOB_ID = 915979
+SLURM_NODELIST = cpu06
+==========================================
+korean_learner: 19898 / 4264 / 4265 줄 (train/val/test; itcerdo와 같아야 함)
+native: 12292 / 2634 / 2634 줄 (train/val/test; itcerdo와 같아야 함)
+lang8: 76692 / 16434 / 16434 줄 (train/val/test; itcerdo와 같아야 함)
+union: 108883 / 23333 / 23334 줄 (train/val/test; itcerdo와 같아야 함)
+REPO=/scratch/r984a02/phdq_bart/26-13_PHDQ_BART DATA_ROOT=/scratch/r984a02/phdq_bart/data/Preprocessed MODEL_DIR=/scratch/r984a02/phdq_bart/models/kanana-1.5-2.1b-instruct-2505 python=/home01/r984a02/.conda/envs/phdq_bart/bin/python3 threads=4
+{"model": "/scratch/r984a02/phdq_bart/models/kanana-1.5-2.1b-instruct-2505", "roundtrip_same": "100.0000%", "roundtrip_cats": {"same": 278830}, "unk": 0, "max_len": {"korean_learner": {"src_max": 181, "tgt_max": 161}, "native": {"src_max": 79, "tgt_max": 55}, "lang8": {"src_max": 146, "tgt_max": 121}, "union": {"src_max": 181, "tgt_max": 161}}, "leak_ok": null}
+결과: /scratch/r984a02/phdq_bart/outputs2/precheck/kanana-1.5-2.1b.json

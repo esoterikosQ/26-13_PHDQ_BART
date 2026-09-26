@@ -1,0 +1,67 @@
+==========================================
+SLURM_JOB_ID = 915975
+SLURM_NODELIST = gpu40
+==========================================
+[2026-09-26 23:58:35] job 915975 on gpu40 partition=amd_a100nv_8 GPU=2 tasks=2 commit=0aa15c1 python=/home01/r984a02/.conda/envs/phdq_bart/bin/python3
+index, name, memory.total [MiB], driver_version
+0, NVIDIA A100-SXM4-80GB, 81920 MiB, 580.105.08
+1, NVIDIA A100-SXM4-80GB, 81920 MiB, 580.105.08
+== 0) 사전 점검 (§4, 토크나이저 기반)
+{"model": "/scratch/r984a02/phdq_bart/models/kanana-1.5-2.1b-instruct-2505", "roundtrip_same": "100.0000%", "roundtrip_cats": {"same": 278830}, "unk": 0, "max_len": {"korean_learner": {"src_max": 181, "tgt_max": 161}, "native": {"src_max": 79, "tgt_max": 55}, "lang8": {"src_max": 146, "tgt_max": 121}, "union": {"src_max": 181, "tgt_max": 161}}, "leak_ok": null}
+== 1) 메모리 측정 (GPU 1개, 최장 문장 batch)
+/scratch/r984a02/phdq_bart/models/kanana-1.5-2.1b-instruct-2505 micro_batch 8 (최장 입력 342 토큰) 학습 최대 42.4GB / gen_batch 32 생성 최대 39.5GB / GPU 79GB
+/scratch/r984a02/phdq_bart/models/kanana-1.5-2.1b-instruct-2505 micro_batch 16 (최장 입력 342 토큰) 학습 최대 57.5GB / gen_batch 64 생성 최대 51.8GB / GPU 79GB
+/scratch/r984a02/phdq_bart/models/kanana-1.5-2.1b-instruct-2505 micro_batch 8 (최장 입력 342 토큰) 학습 최대 38.9GB / gen_batch 32 생성 최대 39.5GB / GPU 79GB
+/scratch/r984a02/phdq_bart/models/kanana-1.5-2.1b-instruct-2505 micro_batch 16 (최장 입력 342 토큰) 학습 최대 38.9GB / gen_batch 64 생성 최대 51.8GB / GPU 79GB
+/scratch/r984a02/phdq_bart/models/kanana-1.5-2.1b-instruct-2505 micro_batch 32 (최장 입력 342 토큰) 학습 최대 42.9GB / gen_batch 64 생성 최대 51.7GB / GPU 79GB
+== 2) native 512줄 1 epoch (GPU 2개)
+[rank: 0] Seed set to 0
+[rank: 1] Seed set to 0
+[2026-09-27 00:05:32] 데이터 인코딩 0.1s: train 512 val 512 test 256
+Initializing distributed: GLOBAL_RANK: 1, MEMBER: 2/2
+[2026-09-27 00:05:40] 누설 검사: ok=True {'first': {'pos': 29, 'max_diff_before_pos': 0.0, 'max_diff_at_pos': 21.936779022216797, 'ok': True}, 'middle': {'pos': 33, 'max_diff_before_pos': 0.0, 'max_diff_at_pos': 18.149093627929688, 'ok': True}, 'loss_tokens_example0': 8, 'loss_starts_after_prompt': True, 'ok': True}
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+[2026-09-27 00:05:40] 학습 시작 run_dir=/scratch/r984a02/phdq_bart/outputs2/kanana-1.5-2.1b/native/smoke_2gpu_915975 accum=4 resume=None
+Initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/2
+----------------------------------------------------------------------------------------------------
+distributed_backend=nccl
+All distributed processes registered. Starting with 2 processes
+----------------------------------------------------------------------------------------------------
+
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+LOCAL_RANK: 1 - CUDA_VISIBLE_DEVICES: [0,1]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+SLURM auto-requeueing enabled. Setting signal handlers.
+SLURM auto-requeueing enabled. Setting signal handlers.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/loops/fit_loop.py:538: Found 423 module(s) in eval mode at the start of training. This may lead to unexpected behavior during training. If this is intentional, you can ignore this warning.
+[2026-09-27 00:05:44] 학습 모드 검사: {'time_kst': '2026-09-27 00:05:44', 'epoch': 0, 'model.training': True, 'dropout_modules_p>0': 0, 'dropout_modules_p>0_training': 0, 'ok': True}
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/torch/autograd/graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at /pytorch/torch/csrc/autograd/input_buffer.cpp:240.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/torch/autograd/graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at /pytorch/torch/csrc/autograd/input_buffer.cpp:240.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[2026-09-27 00:05:46] epoch 0 step 1 batch 4/32 loss 1.9826 lr 9.619e-06
+[2026-09-27 00:06:25] EPOCH 0 val_loss 0.1548 val_GLEU 68.99 (best 68.99 @ 0, es_ref 68.99 wait 0) train 0.2m val 0.5m mem [40.85, 40.85]GB stop=max_epochs
+`Trainer.fit` stopped: `max_epochs=1` reached.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 69.08it/s]
+[2026-09-27 00:07:41] 학습 종료: {'best_gleu': 68.9858, 'best_epoch': 0, 'es_ref': 68.9858, 'es_ref_epoch': 0, 'wait': 0, 'stop_reason': 'max_epochs', 'epochs_done': 1}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 70.17it/s]
+The tokenizer you are loading from '/scratch/r984a02/phdq_bart/outputs2/kanana-1.5-2.1b/native/smoke_2gpu_915975/ckpt/best' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+The tokenizer you are loading from '/scratch/r984a02/phdq_bart/outputs2/kanana-1.5-2.1b/native/smoke_2gpu_915975/ckpt/best' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+LOCAL_RANK: 1 - CUDA_VISIBLE_DEVICES: [0,1]
+SLURM auto-requeueing enabled. Setting signal handlers.
+SLURM auto-requeueing enabled. Setting signal handlers.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:217: Using `DistributedSampler` with the dataloaders. During `trainer.test()`, it is recommended to use `Trainer(devices=1, num_nodes=1)` to ensure each sample/batch gets evaluated exactly once. Otherwise, multi-device settings use `DistributedSampler` that replicates some samples to make sure all devices have same batch size in case of uneven inputs.
+[2026-09-27 00:07:56] TEST GLEU 67.73 P 83.97 R 60.51 F0.5 77.93 (33.94 문장/초, 7.5s)
+batch script for job 915975 written to /scratch/r984a02/phdq_bart/outputs2/kanana-1.5-2.1b/native/smoke_2gpu_915975/slurm/job_915975.sbatch
+== 완료: /scratch/r984a02/phdq_bart/outputs2/kanana-1.5-2.1b/native/smoke_2gpu_915975 를 통째로 공유
