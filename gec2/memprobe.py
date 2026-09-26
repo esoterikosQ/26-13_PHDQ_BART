@@ -30,11 +30,14 @@ def main():
     opt = torch.optim.AdamW(model.parameters(), lr=1e-5)
     b = make_collate(fmt, gen=True)(ps.items[:a.micro_batch])
     torch.cuda.reset_peak_memory_stats()
-    with torch.autocast('cuda', dtype=torch.bfloat16):
-        loss = model(input_ids=b['input_ids'].to(dev), attention_mask=b['attention_mask'].to(dev), labels=b['labels'].to(dev)).loss
-    loss.backward()
-    opt.step()
-    opt.zero_grad(set_to_none=True)
+    # 2 step: 두 번째 step은 옵티마이저 상태가 이미 있는 상태에서 순전파·역전파 (실제 학습의 최대치)
+    for _ in range(2):
+        with torch.autocast('cuda', dtype=torch.bfloat16):
+            loss = model(input_ids=b['input_ids'].to(dev), attention_mask=b['attention_mask'].to(dev), labels=b['labels'].to(dev)).loss
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+        opt.step()
+        opt.zero_grad(set_to_none=True)
     train_peak = torch.cuda.max_memory_allocated() / 2 ** 30
     model.eval()
     g = make_collate(fmt, gen=True)(ps.items[:a.gen_batch_size])

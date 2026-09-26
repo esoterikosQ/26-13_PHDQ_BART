@@ -1,10 +1,11 @@
 # sbatch 스크립트 공통: 경로 불러오기, conda 환경 활성화, 데이터·GPU·task 수 확인, 실행 정보 저장.
 set -euo pipefail
-HERE=${SLURM_SUBMIT_DIR:-$(pwd)}
+HERE=${SLURM_SUBMIT_DIR:-$(pwd)}   # 제출 위치 = 저장소 루트여야 함 (--output=logs/slurm/... 도 이 기준)
+[ -f "$HERE/gec2/slurm/paths.sh" ] || { echo "오류: 저장소 루트에서 sbatch로 제출할 것 (현재 $HERE)"; exit 1; }
 source "$HERE/gec2/slurm/paths.sh"
 [ -f "$HERE/gec2/slurm/paths.local.sh" ] && source "$HERE/gec2/slurm/paths.local.sh"
 cd "$REPO"
-set +u; activate_env; set -u   # conda activate 스크립트는 정의되지 않은 변수를 참조함
+set +u; activate_env || exit 1; set -u   # conda activate 스크립트는 정의되지 않은 변수를 참조함
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True TOKENIZERS_PARALLELISM=false
 for d in korean_learner native lang8 union; do
   for f in ${d}_train.txt ${d}_val.txt ${d}_test.txt ${d}_test.m2; do
