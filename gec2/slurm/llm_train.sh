@@ -18,6 +18,10 @@ if [ -n "${S2:-}" ]; then
 fi
 RUN_DIR=$OUT_ROOT/kanana-1.5-2.1b/$DATA/$RUN_ID
 [ $((GLOBAL % (MICRO * NGPU))) -eq 0 ] || { echo "global 64가 micro×GPU로 나눠지지 않음"; exit 1; }
+# GPU 메모리 확인: 전체 파인튜닝은 가중치·그래디언트·Adam 상태만 약 33GB, 기본 설정 최대 학습 57.5GB·생성 51.8GB.
+# 40GB급 GPU(A100 40GB 등)에서는 DDP 전체 파인튜닝이 불가능하므로 바로 중단한다 (MIN_GPU_MIB로 조정 가능).
+GPU_MIB=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits | sort -n | head -1)
+[ "$GPU_MIB" -ge "${MIN_GPU_MIB:-75000}" ] || { echo "오류: GPU 메모리 ${GPU_MIB}MiB — 80GB급 이상 필요. 이 파티션은 쓰지 말 것"; exit 1; }
 [ "${RESUME:-0}" = 1 ] && EXTRA+=(--resume)
 "${SRUN[@]}" python3 -m gec2.train_llm --model "$MODEL_DIR" --model_tag kanana-1.5-2.1b --data $DATA --run_id $RUN_ID \
   --data_root "$DATA_ROOT" --out_root "$OUT_ROOT" --lr $LR --seed $SEED --devices $NGPU \

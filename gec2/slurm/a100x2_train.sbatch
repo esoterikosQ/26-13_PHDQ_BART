@@ -9,6 +9,8 @@
 #SBATCH --time=02:00:00
 #SBATCH --output=logs/slurm/%x_%j.out
 # 자원: ssh.md의 showque/showappl 기준 (amd_a100nv_8: GPU당 코어 8, --gres 필수, --comment 형식 field=nlp;appl=pytorch-ddp).
+# 다른 A100 파티션: sbatch -p amd_a100_4 gec2/slurm/a100x2_train.sbatch ... (gpu45, A100 4장 중 2장 사용, GPU당 코어 16까지 허용 → 8 요청은 범위 안).
+#   amd_a100_4의 GPU 메모리는 확인 전 — 80GB 미만이면 llm_train.sh가 시작하자마자 중단한다(40GB로는 전체 파인튜닝 불가).
 # --time 근거: 대표 epoch 실측 (작업 916172–916174, korean_learner, A100×2, micro 16 × accumulation 2, GC 없음, 생성 batch 64)
 #   준비(모델 로드·인코딩·누설 검사) 1.5분 / epoch당 학습 3.6–3.7분 + 검증 2.1–2.8분(최고 체크포인트 저장 포함) + 재개용 체크포인트 저장 1.2–1.3분 ≈ 7.5분
 #   korean_learner 전체: 1.5 + 10 × 7.5 + 최종 테스트 약 4분(생성 4,265문장 + 모델 로드) = 80.5분 × 1.2 = 97분 → 02:00:00

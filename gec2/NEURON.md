@@ -58,6 +58,9 @@ itcerdo 결과와 같아야 한다: 데이터 줄 수(korean_learner 19,898 / 4,
 | --- | --- | --- | --- | --- |
 | `a100x2_*.sbatch` | `amd_a100nv_8` | 2 | 2 × 8 | `field=nlp;appl=pytorch-ddp` |
 | `h200x1_*.sbatch` | `amd_h200nv_8` | 1 | 1 × 8 | `field=nlp;appl=pytorch` |
+| `a100x2_*.sbatch`에 `-p amd_a100_4` | `amd_a100_4` (gpu45) | 2 | 2 × 8 | `field=nlp;appl=pytorch-ddp` |
+
+한 파티션의 제출 한도가 차면 다른 파티션으로 낸다: `sbatch -p amd_a100_4 gec2/slurm/a100x2_train.sbatch ...` 또는 `sbatch gec2/slurm/h200x1_train.sbatch ...`. 학습 작업은 시작할 때 GPU 메모리를 확인해 80GB급 미만이면 바로 멈춘다(40GB로는 kanana 전체 파인튜닝 불가). 같은 run을 재개할 때는 처음 시작한 GPU 구성(A100×2 또는 H200×1)으로 낸다. H200의 `--time`은 `h200x1_train.sbatch` 주석의 값을 쓴다.
 
 ```bash
 cd /scratch/r984a02/phdq_bart/26-13_PHDQ_BART      # 반드시 저장소 루트에서 제출
