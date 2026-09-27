@@ -1,0 +1,33 @@
+{
+ "model": "/scratch/r984a02/phdq_bart/models/kanana-1.5-2.1b-instruct-2505",
+ "model_type": "llama",
+ "n_params": 2086984704,
+ "n_params_non_embedding": 1857144576,
+ "tied_embeddings": true,
+ "dropout": {
+  "config": {
+   "attention_dropout": 0.0
+  },
+  "nn.Dropout_p_counts": {}
+ },
+ "format_wrap_bos_eos": false,
+ "gen_kwargs": {
+  "eos_token_id": 128009,
+  "pad_token_id": 128001
+ },
+ "pad_id": 128001,
+ "eos_id": 128009,
+ "bos_id": 128000,
+ "decoder_start_token_id": null,
+ "prompt": "다음 문장의 문법 오류를 고치세요.\n입력: {src}\n출력: ",
+ "max_src_tokens": {
+  "train": 146,
+  "val": 122,
+  "test": 132
+ },
+ "max_tgt_tokens": {
+  "train": 121,
+  "val": 101,
+  "test": 108
+ }
+}

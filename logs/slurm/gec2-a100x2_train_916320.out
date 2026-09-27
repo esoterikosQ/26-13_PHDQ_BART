@@ -1,0 +1,144 @@
+==========================================
+SLURM_JOB_ID = 916320
+SLURM_NODELIST = gpu40
+==========================================
+[2026-09-27 15:32:52] job 916320 on gpu40 partition=amd_a100nv_8 GPU=2 tasks=2 commit=09d484e python=/home01/r984a02/.conda/envs/phdq_bart/bin/python3
+index, name, memory.total [MiB], driver_version
+0, NVIDIA A100-SXM4-80GB, 81920 MiB, 580.105.08
+1, NVIDIA A100-SXM4-80GB, 81920 MiB, 580.105.08
+[rank: 1] Seed set to 0
+[rank: 0] Seed set to 0
+[2026-09-27 15:34:30] 데이터 인코딩 17.6s: train 108882 val 23332 test 23333
+Initializing distributed: GLOBAL_RANK: 1, MEMBER: 2/2
+[2026-09-27 15:34:45] 누설 검사: ok=True {'first': {'pos': 25, 'max_diff_before_pos': 0.0, 'max_diff_at_pos': 19.15342140197754, 'ok': True}, 'middle': {'pos': 28, 'max_diff_before_pos': 0.0, 'max_diff_at_pos': 15.21170425415039, 'ok': True}, 'loss_tokens_example0': 7, 'loss_starts_after_prompt': True, 'ok': True}
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+[2026-09-27 15:34:45] 학습 시작 run_dir=/scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/union/lr1e-5_seed0 accum=2 resume=None
+Initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/2
+----------------------------------------------------------------------------------------------------
+distributed_backend=nccl
+All distributed processes registered. Starting with 2 processes
+----------------------------------------------------------------------------------------------------
+
+LOCAL_RANK: 1 - CUDA_VISIBLE_DEVICES: [0,1]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+SLURM auto-requeueing enabled. Setting signal handlers.
+SLURM auto-requeueing enabled. Setting signal handlers.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/loops/fit_loop.py:538: Found 423 module(s) in eval mode at the start of training. This may lead to unexpected behavior during training. If this is intentional, you can ignore this warning.
+[2026-09-27 15:34:56] 학습 모드 검사: {'time_kst': '2026-09-27 15:34:56', 'epoch': 0, 'model.training': True, 'dropout_modules_p>0': 0, 'dropout_modules_p>0_training': 0, 'ok': True}
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/torch/autograd/graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at /pytorch/torch/csrc/autograd/input_buffer.cpp:240.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/torch/autograd/graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at /pytorch/torch/csrc/autograd/input_buffer.cpp:240.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[2026-09-27 15:35:01] epoch 0 step 1 batch 2/3403 loss 2.3540 lr 5.875e-09
+[2026-09-27 15:36:05] epoch 0 step 100 batch 200/3403 loss 0.5841 lr 5.875e-07
+[2026-09-27 15:37:10] epoch 0 step 200 batch 400/3403 loss 0.4810 lr 1.175e-06
+[2026-09-27 15:38:14] epoch 0 step 300 batch 600/3403 loss 0.3998 lr 1.763e-06
+[2026-09-27 15:39:18] epoch 0 step 400 batch 800/3403 loss 0.3738 lr 2.350e-06
+[2026-09-27 15:40:23] epoch 0 step 500 batch 1000/3403 loss 0.4650 lr 2.938e-06
+[2026-09-27 15:41:27] epoch 0 step 600 batch 1200/3403 loss 0.5784 lr 3.525e-06
+[2026-09-27 15:42:32] epoch 0 step 700 batch 1400/3403 loss 0.4108 lr 4.113e-06
+[2026-09-27 15:43:36] epoch 0 step 800 batch 1600/3403 loss 0.4844 lr 4.700e-06
+[2026-09-27 15:44:40] epoch 0 step 900 batch 1800/3403 loss 0.3624 lr 5.288e-06
+[2026-09-27 15:45:44] epoch 0 step 1000 batch 2000/3403 loss 0.3240 lr 5.875e-06
+[2026-09-27 15:46:49] epoch 0 step 1100 batch 2200/3403 loss 0.4767 lr 6.463e-06
+[2026-09-27 15:47:54] epoch 0 step 1200 batch 2400/3403 loss 0.3961 lr 7.051e-06
+[2026-09-27 15:48:58] epoch 0 step 1300 batch 2600/3403 loss 0.3747 lr 7.638e-06
+[2026-09-27 15:50:02] epoch 0 step 1400 batch 2800/3403 loss 0.3354 lr 8.226e-06
+[2026-09-27 15:51:06] epoch 0 step 1500 batch 3000/3403 loss 0.3956 lr 8.813e-06
+[2026-09-27 15:52:09] epoch 0 step 1600 batch 3200/3403 loss 0.4455 lr 9.401e-06
+[2026-09-27 15:53:15] epoch 0 step 1700 batch 3400/3403 loss 0.3520 lr 9.988e-06
+[2026-09-27 15:58:35] EPOCH 0 val_loss 0.4039 val_GLEU 47.46 (best 47.46 @ 0, es_ref 47.46 wait 0) train 18.3m val 5.3m mem [65.26, 66.38]GB stop=-
+[2026-09-27 15:59:39] epoch 1 step 1800 batch 196/3403 loss 0.4120 lr 9.999e-06
+[2026-09-27 16:00:42] epoch 1 step 1900 batch 396/3403 loss 0.3111 lr 9.996e-06
+[2026-09-27 16:01:45] epoch 1 step 2000 batch 596/3403 loss 0.2945 lr 9.991e-06
+[2026-09-27 16:02:49] epoch 1 step 2100 batch 796/3403 loss 0.2798 lr 9.983e-06
+[2026-09-27 16:03:54] epoch 1 step 2200 batch 996/3403 loss 0.2033 lr 9.974e-06
+[2026-09-27 16:04:58] epoch 1 step 2300 batch 1196/3403 loss 0.2991 lr 9.962e-06
+[2026-09-27 16:06:02] epoch 1 step 2400 batch 1396/3403 loss 0.3235 lr 9.949e-06
+[2026-09-27 16:07:07] epoch 1 step 2500 batch 1596/3403 loss 0.2557 lr 9.933e-06
+[2026-09-27 16:08:11] epoch 1 step 2600 batch 1796/3403 loss 0.2892 lr 9.915e-06
+[2026-09-27 16:09:14] epoch 1 step 2700 batch 1996/3403 loss 0.4302 lr 9.896e-06
+[2026-09-27 16:10:19] epoch 1 step 2800 batch 2196/3403 loss 0.2599 lr 9.874e-06
+[2026-09-27 16:11:24] epoch 1 step 2900 batch 2396/3403 loss 0.3554 lr 9.850e-06
+[2026-09-27 16:12:30] epoch 1 step 3000 batch 2596/3403 loss 0.2843 lr 9.824e-06
+[2026-09-27 16:13:34] epoch 1 step 3100 batch 2796/3403 loss 0.2897 lr 9.796e-06
+[2026-09-27 16:14:38] epoch 1 step 3200 batch 2996/3403 loss 0.3196 lr 9.766e-06
+[2026-09-27 16:15:43] epoch 1 step 3300 batch 3196/3403 loss 0.3888 lr 9.734e-06
+[2026-09-27 16:16:47] epoch 1 step 3400 batch 3396/3403 loss 0.2812 lr 9.700e-06
+[2026-09-27 16:22:42] EPOCH 1 val_loss 0.4023 val_GLEU 48.27 (best 48.27 @ 1, es_ref 48.27 wait 0) train 18.2m val 5.9m mem [68.33, 66.03]GB stop=-
+[2026-09-27 16:23:44] epoch 2 step 3500 batch 192/3403 loss 0.1061 lr 9.664e-06
+[2026-09-27 16:24:48] epoch 2 step 3600 batch 392/3403 loss 0.1604 lr 9.626e-06
+[2026-09-27 16:25:53] epoch 2 step 3700 batch 592/3403 loss 0.1031 lr 9.586e-06
+[2026-09-27 16:26:57] epoch 2 step 3800 batch 792/3403 loss 0.2044 lr 9.544e-06
+[2026-09-27 16:28:02] epoch 2 step 3900 batch 992/3403 loss 0.1575 lr 9.501e-06
+[2026-09-27 16:29:06] epoch 2 step 4000 batch 1192/3403 loss 0.1209 lr 9.455e-06
+[2026-09-27 16:30:10] epoch 2 step 4100 batch 1392/3403 loss 0.2564 lr 9.407e-06
+[2026-09-27 16:31:15] epoch 2 step 4200 batch 1592/3403 loss 0.2009 lr 9.358e-06
+[2026-09-27 16:32:19] epoch 2 step 4300 batch 1792/3403 loss 0.1566 lr 9.307e-06
+[2026-09-27 16:33:23] epoch 2 step 4400 batch 1992/3403 loss 0.1657 lr 9.254e-06
+[2026-09-27 16:34:27] epoch 2 step 4500 batch 2192/3403 loss 0.1409 lr 9.199e-06
+[2026-09-27 16:35:31] epoch 2 step 4600 batch 2392/3403 loss 0.2340 lr 9.143e-06
+[2026-09-27 16:36:35] epoch 2 step 4700 batch 2592/3403 loss 0.1340 lr 9.084e-06
+[2026-09-27 16:37:40] epoch 2 step 4800 batch 2792/3403 loss 0.2513 lr 9.024e-06
+[2026-09-27 16:38:44] epoch 2 step 4900 batch 2992/3403 loss 0.1405 lr 8.963e-06
+[2026-09-27 16:39:49] epoch 2 step 5000 batch 3192/3403 loss 0.1682 lr 8.899e-06
+[2026-09-27 16:40:55] epoch 2 step 5100 batch 3392/3403 loss 0.2073 lr 8.834e-06
+[2026-09-27 16:46:28] EPOCH 2 val_loss 0.4480 val_GLEU 48.37 (best 48.37 @ 2, es_ref 48.27 wait 1) train 18.3m val 5.5m mem [73.03, 66.38]GB stop=-
+[2026-09-27 16:47:29] epoch 3 step 5200 batch 188/3403 loss 0.0826 lr 8.768e-06
+[2026-09-27 16:48:34] epoch 3 step 5300 batch 388/3403 loss 0.1094 lr 8.699e-06
+[2026-09-27 16:49:37] epoch 3 step 5400 batch 588/3403 loss 0.0807 lr 8.630e-06
+[2026-09-27 16:50:41] epoch 3 step 5500 batch 788/3403 loss 0.1206 lr 8.558e-06
+[2026-09-27 16:51:45] epoch 3 step 5600 batch 988/3403 loss 0.0911 lr 8.486e-06
+[2026-09-27 16:52:49] epoch 3 step 5700 batch 1188/3403 loss 0.0602 lr 8.411e-06
+[2026-09-27 16:53:53] epoch 3 step 5800 batch 1388/3403 loss 0.0997 lr 8.336e-06
+[2026-09-27 16:54:59] epoch 3 step 5900 batch 1588/3403 loss 0.0770 lr 8.258e-06
+[2026-09-27 16:56:03] epoch 3 step 6000 batch 1788/3403 loss 0.2057 lr 8.180e-06
+[2026-09-27 16:57:07] epoch 3 step 6100 batch 1988/3403 loss 0.1155 lr 8.100e-06
+[2026-09-27 16:58:12] epoch 3 step 6200 batch 2188/3403 loss 0.1358 lr 8.019e-06
+[2026-09-27 16:59:17] epoch 3 step 6300 batch 2388/3403 loss 0.1262 lr 7.937e-06
+[2026-09-27 17:00:22] epoch 3 step 6400 batch 2588/3403 loss 0.1677 lr 7.853e-06
+[2026-09-27 17:01:26] epoch 3 step 6500 batch 2788/3403 loss 0.1156 lr 7.768e-06
+[2026-09-27 17:02:31] epoch 3 step 6600 batch 2988/3403 loss 0.0974 lr 7.682e-06
+[2026-09-27 17:03:35] epoch 3 step 6700 batch 3188/3403 loss 0.1074 lr 7.595e-06
+[2026-09-27 17:04:41] epoch 3 step 6800 batch 3388/3403 loss 0.0568 lr 7.507e-06
+[2026-09-27 17:09:56] EPOCH 3 val_loss 0.5290 val_GLEU 48.29 (best 48.37 @ 2, es_ref 48.27 wait 2) train 18.3m val 5.2m mem [64.08, 68.33]GB stop=-
+[2026-09-27 17:10:54] epoch 4 step 6900 batch 184/3403 loss 0.1045 lr 7.418e-06
+[2026-09-27 17:11:58] epoch 4 step 7000 batch 384/3403 loss 0.0474 lr 7.328e-06
+[2026-09-27 17:13:02] epoch 4 step 7100 batch 584/3403 loss 0.0398 lr 7.236e-06
+[2026-09-27 17:14:06] epoch 4 step 7200 batch 784/3403 loss 0.0685 lr 7.144e-06
+[2026-09-27 17:15:11] epoch 4 step 7300 batch 984/3403 loss 0.0670 lr 7.051e-06
+[2026-09-27 17:16:15] epoch 4 step 7400 batch 1184/3403 loss 0.0510 lr 6.957e-06
+[2026-09-27 17:17:19] epoch 4 step 7500 batch 1384/3403 loss 0.0817 lr 6.862e-06
+[2026-09-27 17:18:24] epoch 4 step 7600 batch 1584/3403 loss 0.0554 lr 6.767e-06
+[2026-09-27 17:19:28] epoch 4 step 7700 batch 1784/3403 loss 0.0870 lr 6.671e-06
+[2026-09-27 17:20:33] epoch 4 step 7800 batch 1984/3403 loss 0.0564 lr 6.574e-06
+[2026-09-27 17:21:37] epoch 4 step 7900 batch 2184/3403 loss 0.0316 lr 6.476e-06
+[2026-09-27 17:22:41] epoch 4 step 8000 batch 2384/3403 loss 0.0596 lr 6.378e-06
+[2026-09-27 17:23:46] epoch 4 step 8100 batch 2584/3403 loss 0.0467 lr 6.279e-06
+[2026-09-27 17:24:50] epoch 4 step 8200 batch 2784/3403 loss 0.0664 lr 6.179e-06
+[2026-09-27 17:25:54] epoch 4 step 8300 batch 2984/3403 loss 0.0401 lr 6.079e-06
+[2026-09-27 17:26:57] epoch 4 step 8400 batch 3184/3403 loss 0.0566 lr 5.979e-06
+[2026-09-27 17:28:02] epoch 4 step 8500 batch 3384/3403 loss 0.0595 lr 5.878e-06
+[2026-09-27 17:33:19] EPOCH 4 val_loss 0.6045 val_GLEU 48.21 (best 48.37 @ 2, es_ref 48.27 wait 3) train 18.2m val 5.2m mem [73.03, 63.1]GB stop=early_stop
+[2026-09-27 17:34:32] 학습 종료: {'best_gleu': 48.3673, 'best_epoch': 2, 'es_ref': 48.2719, 'es_ref_epoch': 1, 'wait': 3, 'stop_reason': 'early_stop', 'epochs_done': 5}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 38.18it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 37.22it/s]
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+LOCAL_RANK: 1 - CUDA_VISIBLE_DEVICES: [0,1]
+SLURM auto-requeueing enabled. Setting signal handlers.
+SLURM auto-requeueing enabled. Setting signal handlers.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:217: Using `DistributedSampler` with the dataloaders. During `trainer.test()`, it is recommended to use `Trainer(devices=1, num_nodes=1)` to ensure each sample/batch gets evaluated exactly once. Otherwise, multi-device settings use `DistributedSampler` that replicates some samples to make sure all devices have same batch size in case of uneven inputs.
+[2026-09-27 17:40:19] TEST GLEU 48.39 P 59.30 R 40.42 F0.5 54.24 (82.83 문장/초, 281.7s)
+batch script for job 916320 written to /scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/union/lr1e-5_seed0/slurm/job_916320.sbatch
+== 작업 종료: /scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/union/lr1e-5_seed0 (train_state.json의 stop_reason이 비어 있으면 RESUME=1로 이어서 제출)
