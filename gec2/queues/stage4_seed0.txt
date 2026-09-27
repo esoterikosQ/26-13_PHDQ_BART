@@ -1,0 +1,16 @@
+# plan2.md §5 단계 4: 시나리오 1, seed 0, lr은 단계 3(korean_learner 검증 GLEU)에서 고른 값.
+# korean_learner는 단계 3의 같은 설정 run(outputs2/<tag>/korean_learner/lr<선택>_seed0)을 그대로 쓴다.
+# 데이터셋 순서(native → lang8 → union)로 돌려 데이터셋마다 4개 모델 비교가 먼저 갖춰지게 한다.
+# model                     tag              data     run_id          seed lr    micro gen
+skt/kobart-base-v1          kobart-base-v1   native   lr5e-5_seed0    0    5e-5  64    64
+paust/pko-t5-base           pko-t5-base      native   lr5e-4_seed0    0    5e-4  32    64
+facebook/mbart-large-50     mbart-large-50   native   lr3e-5_seed0    0    3e-5  32    64
+paust/pko-t5-large          pko-t5-large     native   lr1e-4_seed0    0    1e-4  8     32
+skt/kobart-base-v1          kobart-base-v1   lang8    lr5e-5_seed0    0    5e-5  64    64
+paust/pko-t5-base           pko-t5-base      lang8    lr5e-4_seed0    0    5e-4  32    64
+facebook/mbart-large-50     mbart-large-50   lang8    lr3e-5_seed0    0    3e-5  32    64
+paust/pko-t5-large          pko-t5-large     lang8    lr1e-4_seed0    0    1e-4  8     32
+skt/kobart-base-v1          kobart-base-v1   union    lr5e-5_seed0    0    5e-5  64    64
+paust/pko-t5-base           pko-t5-base      union    lr5e-4_seed0    0    5e-4  32    64
+facebook/mbart-large-50     mbart-large-50   union    lr3e-5_seed0    0    3e-5  32    64
+paust/pko-t5-large          pko-t5-large     union    lr1e-4_seed0    0    1e-4  8     32
