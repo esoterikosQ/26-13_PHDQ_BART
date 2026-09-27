@@ -1,0 +1,12 @@
+{
+ "data": "korean_learner",
+ "split": "val",
+ "n": 4264,
+ "limit": null,
+ "gleu": 55.059999999999995,
+ "loss": 0.556423871587334,
+ "parse": {
+  "newline_cut": 0,
+  "empty": 0
+ }
+}

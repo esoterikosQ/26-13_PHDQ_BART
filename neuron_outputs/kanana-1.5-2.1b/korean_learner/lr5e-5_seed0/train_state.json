@@ -1,9 +1,9 @@
 {
- "best_gleu": 47.5155,
- "best_epoch": 0,
- "es_ref": 47.5155,
- "es_ref_epoch": 0,
- "wait": 0,
- "stop_reason": null,
- "epochs_done": 1
+ "best_gleu": 53.091100000000004,
+ "best_epoch": 9,
+ "es_ref": 53.0909,
+ "es_ref_epoch": 7,
+ "wait": 2,
+ "stop_reason": "max_epochs",
+ "epochs_done": 10
 }

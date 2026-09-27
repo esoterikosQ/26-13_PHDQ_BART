@@ -1,6 +1,6 @@
 {
- "time_kst": "2026-09-27 08:14:39",
- "epoch": 0,
+ "time_kst": "2026-09-27 11:30:25",
+ "epoch": 1,
  "model.training": true,
  "dropout_modules_p>0": 0,
  "dropout_modules_p>0_training": 0,
