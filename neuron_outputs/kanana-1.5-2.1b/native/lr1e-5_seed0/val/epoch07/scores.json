@@ -1,0 +1,12 @@
+{
+ "data": "native",
+ "split": "val",
+ "n": 2634,
+ "limit": null,
+ "gleu": 84.2722,
+ "loss": 0.1518584706919706,
+ "parse": {
+  "newline_cut": 0,
+  "empty": 0
+ }
+}
