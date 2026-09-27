@@ -84,6 +84,18 @@ RESUME=1 sbatch gec2/slurm/a100x2_train.sbatch korean_learner 1e-5 0
 - 같은 run은 처음 시작한 GPU 구성으로 이어 간다(A100 × 2로 시작했으면 A100 × 2로 재개).
 - batch 기본값은 스모크 측정으로 정했다: GPU당 micro 16, 생성 batch 64, gradient checkpointing 끔(전역 batch 64 고정). 메모리가 부족하면 `GC=--gradient_checkpointing sbatch ...` 또는 `MICRO=8 GEN_BATCH=32 sbatch ...`.
 
+## 3-1. 시나리오 2 (union → 개별)
+
+같은 seed의 union run이 끝난 뒤, 그 최고 체크포인트(`ckpt/best`)에서 가중치만 가져와 korean_learner·native·lang8을 새로 학습한다. 시작 lr은 union lr(1e-5)의 1/3이다.
+
+```bash
+S2=1e-5 sbatch --time=02:00:00 gec2/slurm/a100x2_train.sbatch korean_learner 3.3333e-6 <seed>
+S2=1e-5 sbatch --time=01:00:00 gec2/slurm/a100x2_train.sbatch native 3.3333e-6 <seed>
+S2=1e-5 sbatch --time=05:00:00 gec2/slurm/a100x2_train.sbatch lang8 3.3333e-6 <seed>
+```
+
+run 디렉토리는 `neuron_outputs/kanana-1.5-2.1b/<data>/s2_lr1e-5_seed<N>/`이다. 학습·테스트가 끝난 run은 재개용 `ckpt/last.ckpt`를 자동으로 지우고 `ckpt/best`만 남긴다. union run의 `ckpt/best`는 시나리오 2의 시작점이므로 지우지 않는다.
+
 ## 4. 공유할 것 (run마다)
 
 작업이 끝날 때마다 로그인 노드에서 `bash gec2/slurm/share_results.sh`를 실행한다. `.gitignore` 기준으로 run 디렉토리에서 `ckpt/`(재개용 약 25GB, 평가용 약 8GB)와 데이터 원문 사본(`source.txt`, `reference.txt`)을 뺀 나머지와 `logs/slurm/*.out`이 올라간다.

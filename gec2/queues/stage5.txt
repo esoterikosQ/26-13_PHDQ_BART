@@ -1,0 +1,78 @@
+# plan2.md §5 단계 5: 모든 seq2seq 모델에 seed 1·2(시나리오 1, 4개 데이터셋)와 시나리오 2(seed 0·1·2) 추가 (2026-09-27 사용자 결정).
+# 시나리오 2: 같은 seed의 union 최고 체크포인트(ckpt/best)에서 가중치만 가져와 korean_learner·native·lang8을 새로 학습(옵티마이저·스케줄러 새로 시작),
+#   시작 lr = union lr / 3 (4자리 반올림: 5e-5→1.6667e-5, 5e-4→1.6667e-4, 3e-5→1e-5, 1e-4→3.3333e-5). run_id는 s2_lr<union lr>_seed<N>.
+# 순서: 시나리오 2 seed 0 → seed 1 시나리오 1(union 먼저) → 시나리오 2 seed 1 → seed 2 시나리오 1(union 먼저) → 시나리오 2 seed 2.
+# model                     tag              data            run_id               seed lr         micro gen  [추가 인자]
+# --- 시나리오 2, seed 0
+skt/kobart-base-v1          kobart-base-v1   korean_learner  s2_lr5e-5_seed0      0    1.6667e-5  64    64   --init_weights outputs2/kobart-base-v1/union/lr5e-5_seed0/ckpt/best
+paust/pko-t5-base           pko-t5-base      korean_learner  s2_lr5e-4_seed0      0    1.6667e-4  32    64   --init_weights outputs2/pko-t5-base/union/lr5e-4_seed0/ckpt/best
+facebook/mbart-large-50     mbart-large-50   korean_learner  s2_lr3e-5_seed0      0    1e-5       32    64   --init_weights outputs2/mbart-large-50/union/lr3e-5_seed0/ckpt/best
+paust/pko-t5-large          pko-t5-large     korean_learner  s2_lr1e-4_seed0      0    3.3333e-5  8     32   --init_weights outputs2/pko-t5-large/union/lr1e-4_seed0/ckpt/best
+skt/kobart-base-v1          kobart-base-v1   native          s2_lr5e-5_seed0      0    1.6667e-5  64    64   --init_weights outputs2/kobart-base-v1/union/lr5e-5_seed0/ckpt/best
+paust/pko-t5-base           pko-t5-base      native          s2_lr5e-4_seed0      0    1.6667e-4  32    64   --init_weights outputs2/pko-t5-base/union/lr5e-4_seed0/ckpt/best
+facebook/mbart-large-50     mbart-large-50   native          s2_lr3e-5_seed0      0    1e-5       32    64   --init_weights outputs2/mbart-large-50/union/lr3e-5_seed0/ckpt/best
+paust/pko-t5-large          pko-t5-large     native          s2_lr1e-4_seed0      0    3.3333e-5  8     32   --init_weights outputs2/pko-t5-large/union/lr1e-4_seed0/ckpt/best
+skt/kobart-base-v1          kobart-base-v1   lang8           s2_lr5e-5_seed0      0    1.6667e-5  64    64   --init_weights outputs2/kobart-base-v1/union/lr5e-5_seed0/ckpt/best
+paust/pko-t5-base           pko-t5-base      lang8           s2_lr5e-4_seed0      0    1.6667e-4  32    64   --init_weights outputs2/pko-t5-base/union/lr5e-4_seed0/ckpt/best
+facebook/mbart-large-50     mbart-large-50   lang8           s2_lr3e-5_seed0      0    1e-5       32    64   --init_weights outputs2/mbart-large-50/union/lr3e-5_seed0/ckpt/best
+paust/pko-t5-large          pko-t5-large     lang8           s2_lr1e-4_seed0      0    3.3333e-5  8     32   --init_weights outputs2/pko-t5-large/union/lr1e-4_seed0/ckpt/best
+# --- 시나리오 1, seed 1 (union 먼저: 시나리오 2 시작점)
+skt/kobart-base-v1          kobart-base-v1   union           lr5e-5_seed1         1    5e-5       64    64
+paust/pko-t5-base           pko-t5-base      union           lr5e-4_seed1         1    5e-4       32    64
+facebook/mbart-large-50     mbart-large-50   union           lr3e-5_seed1         1    3e-5       32    64
+paust/pko-t5-large          pko-t5-large     union           lr1e-4_seed1         1    1e-4       8     32
+skt/kobart-base-v1          kobart-base-v1   korean_learner  lr5e-5_seed1         1    5e-5       64    64
+paust/pko-t5-base           pko-t5-base      korean_learner  lr5e-4_seed1         1    5e-4       32    64
+facebook/mbart-large-50     mbart-large-50   korean_learner  lr3e-5_seed1         1    3e-5       32    64
+paust/pko-t5-large          pko-t5-large     korean_learner  lr1e-4_seed1         1    1e-4       8     32
+skt/kobart-base-v1          kobart-base-v1   native          lr5e-5_seed1         1    5e-5       64    64
+paust/pko-t5-base           pko-t5-base      native          lr5e-4_seed1         1    5e-4       32    64
+facebook/mbart-large-50     mbart-large-50   native          lr3e-5_seed1         1    3e-5       32    64
+paust/pko-t5-large          pko-t5-large     native          lr1e-4_seed1         1    1e-4       8     32
+skt/kobart-base-v1          kobart-base-v1   lang8           lr5e-5_seed1         1    5e-5       64    64
+paust/pko-t5-base           pko-t5-base      lang8           lr5e-4_seed1         1    5e-4       32    64
+facebook/mbart-large-50     mbart-large-50   lang8           lr3e-5_seed1         1    3e-5       32    64
+paust/pko-t5-large          pko-t5-large     lang8           lr1e-4_seed1         1    1e-4       8     32
+# --- 시나리오 2, seed 1
+skt/kobart-base-v1          kobart-base-v1   korean_learner  s2_lr5e-5_seed1      1    1.6667e-5  64    64   --init_weights outputs2/kobart-base-v1/union/lr5e-5_seed1/ckpt/best
+paust/pko-t5-base           pko-t5-base      korean_learner  s2_lr5e-4_seed1      1    1.6667e-4  32    64   --init_weights outputs2/pko-t5-base/union/lr5e-4_seed1/ckpt/best
+facebook/mbart-large-50     mbart-large-50   korean_learner  s2_lr3e-5_seed1      1    1e-5       32    64   --init_weights outputs2/mbart-large-50/union/lr3e-5_seed1/ckpt/best
+paust/pko-t5-large          pko-t5-large     korean_learner  s2_lr1e-4_seed1      1    3.3333e-5  8     32   --init_weights outputs2/pko-t5-large/union/lr1e-4_seed1/ckpt/best
+skt/kobart-base-v1          kobart-base-v1   native          s2_lr5e-5_seed1      1    1.6667e-5  64    64   --init_weights outputs2/kobart-base-v1/union/lr5e-5_seed1/ckpt/best
+paust/pko-t5-base           pko-t5-base      native          s2_lr5e-4_seed1      1    1.6667e-4  32    64   --init_weights outputs2/pko-t5-base/union/lr5e-4_seed1/ckpt/best
+facebook/mbart-large-50     mbart-large-50   native          s2_lr3e-5_seed1      1    1e-5       32    64   --init_weights outputs2/mbart-large-50/union/lr3e-5_seed1/ckpt/best
+paust/pko-t5-large          pko-t5-large     native          s2_lr1e-4_seed1      1    3.3333e-5  8     32   --init_weights outputs2/pko-t5-large/union/lr1e-4_seed1/ckpt/best
+skt/kobart-base-v1          kobart-base-v1   lang8           s2_lr5e-5_seed1      1    1.6667e-5  64    64   --init_weights outputs2/kobart-base-v1/union/lr5e-5_seed1/ckpt/best
+paust/pko-t5-base           pko-t5-base      lang8           s2_lr5e-4_seed1      1    1.6667e-4  32    64   --init_weights outputs2/pko-t5-base/union/lr5e-4_seed1/ckpt/best
+facebook/mbart-large-50     mbart-large-50   lang8           s2_lr3e-5_seed1      1    1e-5       32    64   --init_weights outputs2/mbart-large-50/union/lr3e-5_seed1/ckpt/best
+paust/pko-t5-large          pko-t5-large     lang8           s2_lr1e-4_seed1      1    3.3333e-5  8     32   --init_weights outputs2/pko-t5-large/union/lr1e-4_seed1/ckpt/best
+# --- 시나리오 1, seed 2 (union 먼저: 시나리오 2 시작점)
+skt/kobart-base-v1          kobart-base-v1   union           lr5e-5_seed2         2    5e-5       64    64
+paust/pko-t5-base           pko-t5-base      union           lr5e-4_seed2         2    5e-4       32    64
+facebook/mbart-large-50     mbart-large-50   union           lr3e-5_seed2         2    3e-5       32    64
+paust/pko-t5-large          pko-t5-large     union           lr1e-4_seed2         2    1e-4       8     32
+skt/kobart-base-v1          kobart-base-v1   korean_learner  lr5e-5_seed2         2    5e-5       64    64
+paust/pko-t5-base           pko-t5-base      korean_learner  lr5e-4_seed2         2    5e-4       32    64
+facebook/mbart-large-50     mbart-large-50   korean_learner  lr3e-5_seed2         2    3e-5       32    64
+paust/pko-t5-large          pko-t5-large     korean_learner  lr1e-4_seed2         2    1e-4       8     32
+skt/kobart-base-v1          kobart-base-v1   native          lr5e-5_seed2         2    5e-5       64    64
+paust/pko-t5-base           pko-t5-base      native          lr5e-4_seed2         2    5e-4       32    64
+facebook/mbart-large-50     mbart-large-50   native          lr3e-5_seed2         2    3e-5       32    64
+paust/pko-t5-large          pko-t5-large     native          lr1e-4_seed2         2    1e-4       8     32
+skt/kobart-base-v1          kobart-base-v1   lang8           lr5e-5_seed2         2    5e-5       64    64
+paust/pko-t5-base           pko-t5-base      lang8           lr5e-4_seed2         2    5e-4       32    64
+facebook/mbart-large-50     mbart-large-50   lang8           lr3e-5_seed2         2    3e-5       32    64
+paust/pko-t5-large          pko-t5-large     lang8           lr1e-4_seed2         2    1e-4       8     32
+# --- 시나리오 2, seed 2
+skt/kobart-base-v1          kobart-base-v1   korean_learner  s2_lr5e-5_seed2      2    1.6667e-5  64    64   --init_weights outputs2/kobart-base-v1/union/lr5e-5_seed2/ckpt/best
+paust/pko-t5-base           pko-t5-base      korean_learner  s2_lr5e-4_seed2      2    1.6667e-4  32    64   --init_weights outputs2/pko-t5-base/union/lr5e-4_seed2/ckpt/best
+facebook/mbart-large-50     mbart-large-50   korean_learner  s2_lr3e-5_seed2      2    1e-5       32    64   --init_weights outputs2/mbart-large-50/union/lr3e-5_seed2/ckpt/best
+paust/pko-t5-large          pko-t5-large     korean_learner  s2_lr1e-4_seed2      2    3.3333e-5  8     32   --init_weights outputs2/pko-t5-large/union/lr1e-4_seed2/ckpt/best
+skt/kobart-base-v1          kobart-base-v1   native          s2_lr5e-5_seed2      2    1.6667e-5  64    64   --init_weights outputs2/kobart-base-v1/union/lr5e-5_seed2/ckpt/best
+paust/pko-t5-base           pko-t5-base      native          s2_lr5e-4_seed2      2    1.6667e-4  32    64   --init_weights outputs2/pko-t5-base/union/lr5e-4_seed2/ckpt/best
+facebook/mbart-large-50     mbart-large-50   native          s2_lr3e-5_seed2      2    1e-5       32    64   --init_weights outputs2/mbart-large-50/union/lr3e-5_seed2/ckpt/best
+paust/pko-t5-large          pko-t5-large     native          s2_lr1e-4_seed2      2    3.3333e-5  8     32   --init_weights outputs2/pko-t5-large/union/lr1e-4_seed2/ckpt/best
+skt/kobart-base-v1          kobart-base-v1   lang8           s2_lr5e-5_seed2      2    1.6667e-5  64    64   --init_weights outputs2/kobart-base-v1/union/lr5e-5_seed2/ckpt/best
+paust/pko-t5-base           pko-t5-base      lang8           s2_lr5e-4_seed2      2    1.6667e-4  32    64   --init_weights outputs2/pko-t5-base/union/lr5e-4_seed2/ckpt/best
+facebook/mbart-large-50     mbart-large-50   lang8           s2_lr3e-5_seed2      2    1e-5       32    64   --init_weights outputs2/mbart-large-50/union/lr3e-5_seed2/ckpt/best
+paust/pko-t5-large          pko-t5-large     lang8           s2_lr1e-4_seed2      2    3.3333e-5  8     32   --init_weights outputs2/pko-t5-large/union/lr1e-4_seed2/ckpt/best
