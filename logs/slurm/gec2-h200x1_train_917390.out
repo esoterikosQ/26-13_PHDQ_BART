@@ -1,0 +1,51 @@
+==========================================
+SLURM_JOB_ID = 917390
+SLURM_NODELIST = gpu54
+==========================================
+[2026-09-28 22:32:47] job 917390 on gpu54 partition=amd_h200nv_8 GPU=1 tasks=1 commit=55251af python=/home01/r984a02/.conda/envs/phdq_bart/bin/python3
+index, name, memory.total [MiB], driver_version
+0, NVIDIA H200, 143771 MiB, 580.105.08
+[rank: 0] Seed set to 2
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:03<00:03,  3.39s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  2.94s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  3.01s/it]
+[2026-09-28 22:37:20] 데이터 인코딩 2.6s: train 19898 val 4264 test 4265
+[2026-09-28 22:37:48] 누설 검사: ok=True {'first': {'pos': 26, 'max_diff_before_pos': 0.0, 'max_diff_at_pos': 15.399980545043945, 'ok': True}, 'middle': {'pos': 29, 'max_diff_before_pos': 0.0, 'max_diff_at_pos': 12.50016975402832, 'ok': True}, 'loss_tokens_example0': 7, 'loss_starts_after_prompt': True, 'ok': True}
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+[2026-09-28 22:37:48] 학습 시작 run_dir=/scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/korean_learner/s2_lr1e-5_seed2 accum=4 resume=None
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+SLURM auto-requeueing enabled. Setting signal handlers.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/loops/fit_loop.py:538: Found 423 module(s) in eval mode at the start of training. This may lead to unexpected behavior during training. If this is intentional, you can ignore this warning.
+[2026-09-28 22:37:50] 학습 모드 검사: {'time_kst': '2026-09-28 22:37:50', 'epoch': 0, 'model.training': True, 'dropout_modules_p>0': 0, 'dropout_modules_p>0_training': 0, 'ok': True}
+[2026-09-28 22:38:19] epoch 0 step 1 batch 4/1244 loss 0.0499 lr 1.072e-08
+[2026-09-28 22:40:35] epoch 0 step 100 batch 400/1244 loss 0.0311 lr 1.072e-06
+[2026-09-28 22:41:49] epoch 0 step 200 batch 800/1244 loss 0.0271 lr 2.144e-06
+[2026-09-28 22:42:54] epoch 0 step 300 batch 1200/1244 loss 0.0218 lr 3.215e-06
+[2026-09-28 22:46:24] EPOCH 0 val_loss 0.3722 val_GLEU 59.06 (best 59.06 @ 0, es_ref 59.06 wait 0) train 5.2m val 3.3m mem [65.3]GB stop=-
+[2026-09-28 22:47:08] epoch 1 step 400 batch 356/1244 loss 0.0069 lr 3.325e-06
+[2026-09-28 22:47:58] epoch 1 step 500 batch 756/1244 loss 0.0148 lr 3.296e-06
+[2026-09-28 22:48:48] epoch 1 step 600 batch 1156/1244 loss 0.0176 lr 3.246e-06
+[2026-09-28 22:50:09] EPOCH 1 val_loss 0.4462 val_GLEU 58.45 (best 59.06 @ 0, es_ref 59.06 wait 1) train 2.6m val 1.2m mem [65.3]GB stop=-
+[2026-09-28 22:50:48] epoch 2 step 700 batch 312/1244 loss 0.0009 lr 3.177e-06
+[2026-09-28 22:51:37] epoch 2 step 800 batch 712/1244 loss 0.0014 lr 3.089e-06
+[2026-09-28 22:52:27] epoch 2 step 900 batch 1112/1244 loss 0.0074 lr 2.982e-06
+[2026-09-28 22:53:52] EPOCH 2 val_loss 0.4584 val_GLEU 58.72 (best 59.06 @ 0, es_ref 59.06 wait 2) train 2.6m val 1.1m mem [65.3]GB stop=-
+[2026-09-28 22:54:26] epoch 3 step 1000 batch 268/1244 loss 0.0005 lr 2.859e-06
+[2026-09-28 22:55:15] epoch 3 step 1100 batch 668/1244 loss 0.0017 lr 2.721e-06
+[2026-09-28 22:56:05] epoch 3 step 1200 batch 1068/1244 loss 0.0012 lr 2.570e-06
+[2026-09-28 22:57:36] EPOCH 3 val_loss 0.4858 val_GLEU 58.97 (best 59.06 @ 0, es_ref 59.06 wait 3) train 2.6m val 1.1m mem [65.3]GB stop=early_stop
+[2026-09-28 22:58:36] 학습 종료: {'best_gleu': 59.0613, 'best_epoch': 0, 'es_ref': 59.0613, 'es_ref_epoch': 0, 'wait': 3, 'stop_reason': 'early_stop', 'epochs_done': 4}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 206.97it/s]
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+SLURM auto-requeueing enabled. Setting signal handlers.
+[2026-09-28 23:00:05] TEST GLEU 58.80 P 63.95 R 46.46 F0.5 59.48 (62.16 문장/초, 68.6s)
+batch script for job 917390 written to /scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/korean_learner/s2_lr1e-5_seed2/slurm/job_917390.sbatch
+== 작업 종료: /scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/korean_learner/s2_lr1e-5_seed2 (train_state.json의 stop_reason이 비어 있으면 RESUME=1로 이어서 제출)

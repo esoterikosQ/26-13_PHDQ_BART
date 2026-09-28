@@ -1,0 +1,67 @@
+==========================================
+SLURM_JOB_ID = 917386
+SLURM_NODELIST = gpu40
+==========================================
+[2026-09-28 23:08:54] job 917386 on gpu40 partition=amd_a100nv_8 GPU=2 tasks=2 commit=55251af python=/home01/r984a02/.conda/envs/phdq_bart/bin/python3
+index, name, memory.total [MiB], driver_version
+0, NVIDIA A100-SXM4-80GB, 81920 MiB, 580.105.08
+1, NVIDIA A100-SXM4-80GB, 81920 MiB, 580.105.08
+[rank: 0] Seed set to 1
+[rank: 1] Seed set to 1
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:03<00:03,  3.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.78s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.88s/it]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:03<00:03,  3.54s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.80s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.91s/it]
+[2026-09-28 23:11:20] 데이터 인코딩 1.8s: train 12292 val 2634 test 2634
+Initializing distributed: GLOBAL_RANK: 1, MEMBER: 2/2
+[2026-09-28 23:11:23] 누설 검사: ok=True {'first': {'pos': 28, 'max_diff_before_pos': 0.0, 'max_diff_at_pos': 11.58303451538086, 'ok': True}, 'middle': {'pos': 32, 'max_diff_before_pos': 0.0, 'max_diff_at_pos': 10.480035781860352, 'ok': True}, 'loss_tokens_example0': 9, 'loss_starts_after_prompt': True, 'ok': True}
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+[2026-09-28 23:11:23] 학습 시작 run_dir=/scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/native/s2_lr1e-5_seed1 accum=2 resume=None
+Initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/2
+----------------------------------------------------------------------------------------------------
+distributed_backend=nccl
+All distributed processes registered. Starting with 2 processes
+----------------------------------------------------------------------------------------------------
+
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+LOCAL_RANK: 1 - CUDA_VISIBLE_DEVICES: [0,1]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+SLURM auto-requeueing enabled. Setting signal handlers.
+SLURM auto-requeueing enabled. Setting signal handlers.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/loops/fit_loop.py:538: Found 423 module(s) in eval mode at the start of training. This may lead to unexpected behavior during training. If this is intentional, you can ignore this warning.
+[2026-09-28 23:11:26] 학습 모드 검사: {'time_kst': '2026-09-28 23:11:26', 'epoch': 0, 'model.training': True, 'dropout_modules_p>0': 0, 'dropout_modules_p>0_training': 0, 'ok': True}
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/torch/autograd/graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at /pytorch/torch/csrc/autograd/input_buffer.cpp:240.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/torch/autograd/graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at /pytorch/torch/csrc/autograd/input_buffer.cpp:240.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[2026-09-28 23:11:27] epoch 0 step 1 batch 2/385 loss 0.0252 lr 1.727e-08
+[2026-09-28 23:12:30] epoch 0 step 100 batch 200/385 loss 0.0588 lr 1.727e-06
+[2026-09-28 23:14:31] EPOCH 0 val_loss 0.1133 val_GLEU 83.93 (best 83.93 @ 0, es_ref 83.93 wait 0) train 2.0m val 1.1m mem [54.25, 54.34]GB stop=-
+[2026-09-28 23:14:36] epoch 1 step 200 batch 14/385 loss 0.0040 lr 3.333e-06
+[2026-09-28 23:15:38] epoch 1 step 300 batch 214/385 loss 0.0004 lr 3.302e-06
+[2026-09-28 23:17:21] EPOCH 1 val_loss 0.1253 val_GLEU 83.24 (best 83.93 @ 0, es_ref 83.93 wait 1) train 2.0m val 0.8m mem [54.25, 54.34]GB stop=-
+[2026-09-28 23:17:30] epoch 2 step 400 batch 28/385 loss 0.0005 lr 3.218e-06
+[2026-09-28 23:18:33] epoch 2 step 500 batch 228/385 loss 0.0007 lr 3.083e-06
+[2026-09-28 23:20:10] EPOCH 2 val_loss 0.1323 val_GLEU 83.86 (best 83.93 @ 0, es_ref 83.93 wait 2) train 2.0m val 0.8m mem [54.34, 53.99]GB stop=-
+[2026-09-28 23:20:24] epoch 3 step 600 batch 42/385 loss 0.0002 lr 2.902e-06
+[2026-09-28 23:21:26] epoch 3 step 700 batch 242/385 loss 0.0028 lr 2.680e-06
+[2026-09-28 23:23:18] EPOCH 3 val_loss 0.1457 val_GLEU 83.96 (best 83.96 @ 3, es_ref 83.93 wait 3) train 2.0m val 1.1m mem [54.34, 54.07]GB stop=early_stop
+[2026-09-28 23:25:01] 학습 종료: {'best_gleu': 83.9636, 'best_epoch': 3, 'es_ref': 83.9276, 'es_ref_epoch': 0, 'wait': 3, 'stop_reason': 'early_stop', 'epochs_done': 4}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 69.49it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 69.49it/s]
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+LOCAL_RANK: 1 - CUDA_VISIBLE_DEVICES: [0,1]
+SLURM auto-requeueing enabled. Setting signal handlers.
+SLURM auto-requeueing enabled. Setting signal handlers.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:217: Using `DistributedSampler` with the dataloaders. During `trainer.test()`, it is recommended to use `Trainer(devices=1, num_nodes=1)` to ensure each sample/batch gets evaluated exactly once. Otherwise, multi-device settings use `DistributedSampler` that replicates some samples to make sure all devices have same batch size in case of uneven inputs.
+[2026-09-28 23:25:58] TEST GLEU 82.31 P 91.86 R 78.54 F0.5 88.85 (60.24 문장/초, 43.7s)
+batch script for job 917386 written to /scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/native/s2_lr1e-5_seed1/slurm/job_917386.sbatch
+== 작업 종료: /scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/native/s2_lr1e-5_seed1 (train_state.json의 stop_reason이 비어 있으면 RESUME=1로 이어서 제출)
