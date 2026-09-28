@@ -1,0 +1,25 @@
+{
+ "data": "union",
+ "split": "test",
+ "n": 23333,
+ "limit": null,
+ "gleu": 48.745,
+ "p": 57.78,
+ "r": 38.11,
+ "f05": 52.370000000000005,
+ "loss": 0.40238859086891177,
+ "parse": {
+  "newline_cut": 0,
+  "empty": 0
+ },
+ "speed": {
+  "test_gen_time_s": 281.6,
+  "test_total_time_s": 313.1,
+  "sentences_per_s": 82.87,
+  "gen_batch_size": 64,
+  "n_gpus": 2,
+  "num_beams": 4
+ },
+ "best_epoch": 1,
+ "best_val_gleu": 48.8586
+}

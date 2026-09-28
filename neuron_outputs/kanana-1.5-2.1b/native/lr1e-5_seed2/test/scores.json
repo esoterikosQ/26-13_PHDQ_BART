@@ -1,0 +1,25 @@
+{
+ "data": "native",
+ "split": "test",
+ "n": 2634,
+ "limit": null,
+ "gleu": 82.9491,
+ "p": 92.09,
+ "r": 79.95,
+ "f05": 89.38000000000001,
+ "loss": 0.14300073257929002,
+ "parse": {
+  "newline_cut": 0,
+  "empty": 0
+ },
+ "speed": {
+  "test_gen_time_s": 63.1,
+  "test_total_time_s": 66.9,
+  "sentences_per_s": 41.74,
+  "gen_batch_size": 64,
+  "n_gpus": 2,
+  "num_beams": 4
+ },
+ "best_epoch": 5,
+ "best_val_gleu": 85.4588
+}

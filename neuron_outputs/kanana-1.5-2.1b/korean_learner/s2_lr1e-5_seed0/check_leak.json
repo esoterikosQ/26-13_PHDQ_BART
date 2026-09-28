@@ -1,0 +1,17 @@
+{
+ "first": {
+  "pos": 26,
+  "max_diff_before_pos": 0.0,
+  "max_diff_at_pos": 10.8755464553833,
+  "ok": true
+ },
+ "middle": {
+  "pos": 29,
+  "max_diff_before_pos": 0.0,
+  "max_diff_at_pos": 12.29594612121582,
+  "ok": true
+ },
+ "loss_tokens_example0": 7,
+ "loss_starts_after_prompt": true,
+ "ok": true
+}

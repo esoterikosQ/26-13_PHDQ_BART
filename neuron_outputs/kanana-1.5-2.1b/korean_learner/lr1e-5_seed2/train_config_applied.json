@@ -1,0 +1,8 @@
+{
+ "total_steps": 3110,
+ "warmup_steps": 311,
+ "n_params_decay": 2086868224,
+ "n_params_no_decay": 116480,
+ "accumulate_grad_batches": 4,
+ "precision_plugin": "MixedPrecision"
+}

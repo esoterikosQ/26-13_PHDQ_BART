@@ -1,0 +1,25 @@
+{
+ "data": "korean_learner",
+ "split": "test",
+ "n": 4265,
+ "limit": null,
+ "gleu": 59.2872,
+ "p": 64.77000000000001,
+ "r": 46.97,
+ "f05": 60.209999999999994,
+ "loss": 0.4644385996564364,
+ "parse": {
+  "newline_cut": 0,
+  "empty": 0
+ },
+ "speed": {
+  "test_gen_time_s": 71.5,
+  "test_total_time_s": 77.8,
+  "sentences_per_s": 59.66,
+  "gen_batch_size": 64,
+  "n_gpus": 2,
+  "num_beams": 4
+ },
+ "best_epoch": 3,
+ "best_val_gleu": 59.479000000000006
+}

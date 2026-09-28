@@ -1,0 +1,54 @@
+==========================================
+SLURM_JOB_ID = 916498
+SLURM_NODELIST = gpu54
+==========================================
+[2026-09-27 22:33:08] job 916498 on gpu54 partition=amd_h200nv_8 GPU=1 tasks=1 commit=d3135d0 python=/home01/r984a02/.conda/envs/phdq_bart/bin/python3
+index, name, memory.total [MiB], driver_version
+0, NVIDIA H200, 143771 MiB, 580.105.08
+[rank: 0] Seed set to 2
+[2026-09-27 22:34:43] 데이터 인코딩 2.7s: train 19898 val 4264 test 4265
+[2026-09-27 22:34:54] 누설 검사: ok=True {'first': {'pos': 26, 'max_diff_before_pos': 0.0, 'max_diff_at_pos': 21.308273315429688, 'ok': True}, 'middle': {'pos': 29, 'max_diff_before_pos': 0.0, 'max_diff_at_pos': 14.935998916625977, 'ok': True}, 'loss_tokens_example0': 7, 'loss_starts_after_prompt': True, 'ok': True}
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+[2026-09-27 22:34:54] 학습 시작 run_dir=/scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/korean_learner/lr1e-5_seed2 accum=4 resume=None
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+SLURM auto-requeueing enabled. Setting signal handlers.
+/home01/r984a02/.conda/envs/phdq_bart/lib/python3.12/site-packages/pytorch_lightning/loops/fit_loop.py:538: Found 423 module(s) in eval mode at the start of training. This may lead to unexpected behavior during training. If this is intentional, you can ignore this warning.
+[2026-09-27 22:34:55] 학습 모드 검사: {'time_kst': '2026-09-27 22:34:55', 'epoch': 0, 'model.training': True, 'dropout_modules_p>0': 0, 'dropout_modules_p>0_training': 0, 'ok': True}
+[2026-09-27 22:35:04] epoch 0 step 1 batch 4/1244 loss 2.1137 lr 3.215e-08
+[2026-09-27 22:37:19] epoch 0 step 100 batch 400/1244 loss 0.3005 lr 3.215e-06
+[2026-09-27 22:38:32] epoch 0 step 200 batch 800/1244 loss 0.3235 lr 6.431e-06
+[2026-09-27 22:39:36] epoch 0 step 300 batch 1200/1244 loss 0.3283 lr 9.646e-06
+[2026-09-27 22:43:15] EPOCH 0 val_loss 0.2804 val_GLEU 58.03 (best 58.03 @ 0, es_ref 58.03 wait 0) train 4.8m val 3.5m mem [65.3]GB stop=-
+[2026-09-27 22:43:58] epoch 1 step 400 batch 356/1244 loss 0.1566 lr 9.975e-06
+[2026-09-27 22:44:48] epoch 1 step 500 batch 756/1244 loss 0.1846 lr 9.888e-06
+[2026-09-27 22:45:38] epoch 1 step 600 batch 1156/1244 loss 0.1806 lr 9.739e-06
+[2026-09-27 22:47:33] EPOCH 1 val_loss 0.2939 val_GLEU 59.24 (best 59.24 @ 1, es_ref 59.24 wait 0) train 2.6m val 1.7m mem [65.3]GB stop=-
+[2026-09-27 22:48:11] epoch 2 step 700 batch 312/1244 loss 0.0432 lr 9.531e-06
+[2026-09-27 22:49:00] epoch 2 step 800 batch 712/1244 loss 0.0786 lr 9.266e-06
+[2026-09-27 22:49:50] epoch 2 step 900 batch 1112/1244 loss 0.0855 lr 8.947e-06
+[2026-09-27 22:51:21] EPOCH 2 val_loss 0.3367 val_GLEU 58.69 (best 59.24 @ 1, es_ref 59.24 wait 1) train 2.6m val 1.2m mem [65.3]GB stop=-
+[2026-09-27 22:51:54] epoch 3 step 1000 batch 268/1244 loss 0.0232 lr 8.578e-06
+[2026-09-27 22:52:43] epoch 3 step 1100 batch 668/1244 loss 0.0396 lr 8.164e-06
+[2026-09-27 22:53:33] epoch 3 step 1200 batch 1068/1244 loss 0.0176 lr 7.711e-06
+[2026-09-27 22:55:06] EPOCH 3 val_loss 0.3745 val_GLEU 58.94 (best 59.24 @ 1, es_ref 59.24 wait 2) train 2.6m val 1.2m mem [65.3]GB stop=-
+[2026-09-27 22:55:34] epoch 4 step 1300 batch 224/1244 loss 0.0173 lr 7.223e-06
+[2026-09-27 22:56:23] epoch 4 step 1400 batch 624/1244 loss 0.0176 lr 6.707e-06
+[2026-09-27 22:57:13] epoch 4 step 1500 batch 1024/1244 loss 0.0162 lr 6.170e-06
+[2026-09-27 22:58:53] EPOCH 4 val_loss 0.4089 val_GLEU 58.78 (best 59.24 @ 1, es_ref 59.24 wait 3) train 2.6m val 1.2m mem [65.3]GB stop=early_stop
+[2026-09-27 22:59:51] 학습 종료: {'best_gleu': 59.235800000000005, 'best_epoch': 1, 'es_ref': 59.235800000000005, 'es_ref_epoch': 1, 'wait': 3, 'stop_reason': 'early_stop', 'epochs_done': 5}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 205.98it/s]
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+SLURM auto-requeueing enabled. Setting signal handlers.
+[2026-09-27 23:01:19] TEST GLEU 58.59 P 62.21 R 46.78 F0.5 58.36 (64.08 문장/초, 66.6s)
+batch script for job 916498 written to /scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/korean_learner/lr1e-5_seed2/slurm/job_916498.sbatch
+== 작업 종료: /scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/korean_learner/lr1e-5_seed2 (train_state.json의 stop_reason이 비어 있으면 RESUME=1로 이어서 제출)

@@ -1,0 +1,44 @@
+{
+ "optimizer": "torch.optim.AdamW (bias correction)",
+ "lr": 3.3333e-06,
+ "betas": [
+  0.9,
+  0.999
+ ],
+ "eps": 1e-08,
+ "weight_decay": 0.01,
+ "weight_decay_excluded": "bias, *Norm* modules",
+ "schedule": "linear warmup 0.1 + cosine to 0 over 10 planned epochs",
+ "gradient_clip_norm": 1.0,
+ "precision": "bf16-mixed",
+ "global_batch": 64,
+ "micro_batch_per_gpu": 16,
+ "n_gpus": 2,
+ "grad_accumulation": 2,
+ "max_epochs": 10,
+ "early_stop": true,
+ "early_stop_rule": {
+  "min_delta": 0.2,
+  "patience": 3,
+  "min_epochs": 4
+ },
+ "dropout": {
+  "config": {
+   "attention_dropout": 0.0
+  },
+  "nn.Dropout_p_counts": {}
+ },
+ "gradient_checkpointing": false,
+ "generation": {
+  "num_beams": 4,
+  "do_sample": false,
+  "max_new_tokens": "min(512, ceil(2.0 × 최장 입력) + 10)",
+  "eos_token_id": 128009,
+  "pad_token_id": 128001
+ },
+ "seed": 1,
+ "init_weights": "/scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/kanana-1.5-2.1b/union/lr1e-5_seed1/ckpt/best",
+ "resume_from": null,
+ "train_size": 19898,
+ "micro_batches_per_epoch_per_gpu": 622
+}

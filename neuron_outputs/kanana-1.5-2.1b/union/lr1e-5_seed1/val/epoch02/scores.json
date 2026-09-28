@@ -1,0 +1,12 @@
+{
+ "data": "union",
+ "split": "val",
+ "n": 23332,
+ "limit": null,
+ "gleu": 48.3104,
+ "loss": 0.45798387646391736,
+ "parse": {
+  "newline_cut": 0,
+  "empty": 0
+ }
+}

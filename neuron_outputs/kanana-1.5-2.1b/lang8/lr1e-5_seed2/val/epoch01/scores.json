@@ -1,0 +1,12 @@
+{
+ "data": "lang8",
+ "split": "val",
+ "n": 16434,
+ "limit": null,
+ "gleu": 38.6254,
+ "loss": 0.4838754447428971,
+ "parse": {
+  "newline_cut": 0,
+  "empty": 0
+ }
+}

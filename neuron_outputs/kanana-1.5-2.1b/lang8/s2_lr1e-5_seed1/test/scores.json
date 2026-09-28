@@ -1,0 +1,25 @@
+{
+ "data": "lang8",
+ "split": "test",
+ "n": 16434,
+ "limit": null,
+ "gleu": 40.0715,
+ "p": 55.93,
+ "r": 37.19,
+ "f05": 50.81,
+ "loss": 0.5441470071595603,
+ "parse": {
+  "newline_cut": 0,
+  "empty": 0
+ },
+ "speed": {
+  "test_gen_time_s": 186.5,
+  "test_total_time_s": 213.3,
+  "sentences_per_s": 88.1,
+  "gen_batch_size": 64,
+  "n_gpus": 1,
+  "num_beams": 4
+ },
+ "best_epoch": 0,
+ "best_val_gleu": 39.4645
+}
