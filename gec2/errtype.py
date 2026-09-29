@@ -33,8 +33,15 @@ PAPER_KOBART_UNION = {
 
 
 def read_m2_blocks(path):
+    """'S ' 줄마다 새 블록 (union_test.m2에는 데이터셋 경계 2곳에 빈 줄이 없다; m2scorer도 'S ' 줄로 나눈다)."""
+    blocks = []
     with open(path, encoding='utf-8') as f:
-        blocks = [b for b in f.read().strip().split('\n\n') if b.strip()]
+        for line in f.read().split('\n'):
+            if line.startswith('S '):
+                blocks.append([line])
+            elif line.strip() and blocks:
+                blocks[-1].append(line)
+    blocks = ['\n'.join(b) for b in blocks]
     types = [{line.split('|||')[1] for line in b.split('\n') if line.startswith('A ')} for b in blocks]
     return blocks, types
 
