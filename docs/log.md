@@ -977,3 +977,11 @@ python3 -m gec2.summarize --json logs/gec2_summary_interim.json > logs/gec2_summ
     - 논문·재현 KoBART: 정밀도 크게 상승(korean_learner +10.2/+8.8, native +10.1/+5.9), 재현율 하락, GLEU 하락(native −7.5/−7.4).
     - gec2 5개 모델: korean_learner ΔGLEU 0~+1.2·ΔP +0.2~+2.8·ΔR −0.1~+1.8, native ΔGLEU −0.5~−2.5·ΔP −1.3~+0.8·ΔR −0.5~−2.8, lang8 ΔGLEU ≈0·ΔP +0.8~+4.3·ΔR +3.2~+6.4(ΔF0.5 +2.0~+5.4).
     - 해석: 논문의 "시나리오 2에서 정밀도↑·재현율↓" 경향은 재현 KoBART(원본 recipe)에서는 재현되지만 표준 학습(gec2)에서는 거의 사라짐 → 그 경향의 상당 부분은 원본 학습 방식의 특성. native에서 GLEU가 내려가는 방향만 공통.
+
+### 08:40–13:31 · plan2 단계 7: 결과 문서, 저장소 정리 [gsm, itcerdo]
+
+- 추가 확인: kanana native seed 1(시나리오 1)이 두 번 실행됨(작업 916461 2026-09-27, 916761 2026-09-28). 두 번째 기록이 같은 `epochs.jsonl`에 덧붙어 14줄. 두 실행의 epoch별 검증 GLEU가 완전히 같음(79.26 … 84.63, 7 epoch 후 조기 종료) → 결과 영향 없음, 같은 seed·GPU 구성의 결정적 재현 확인. 학습 시간 집계는 epoch별 마지막 기록만 사용.
+- 학습 시간(3-seed 평균, 학습 + 매 epoch 검증): KoBART(gec2) 3/2/9/13분, pko-t5-base 9/5/31/45분, mBART 12/7/43/62분, pko-t5-large 35/21/127/184분(RTX 5090), kanana 27/27/78/111분(A100×2·H200, 조기 종료 5–10 epoch). 파라미터(전체 / 임베딩 제외): KoBART 123.9M/100.8M, pko-t5-base 275.6M/198.2M, mBART 610.9M/354.8M, pko-t5-large 820.5M/717.4M, kanana 2,087.0M/1,857.1M.
+- `result_gec2.md` 작성(요약, 설정, 시나리오 1·2 3-seed 표, 크기·계열 비교, 논문 비교(시나리오 2 차이, 유형별 점수 재구성·검증), 추론 속도·학습 시간, 한계, 파일 위치). 수치 대조 중 요약의 "재현 KoBART 대비 6.8–10.3점"을 "6.0–10.3점"(lang8 +6.0)으로 정정.
+- `plan2.md` §5 단계 6 설명 갱신(속도는 환경 조건부 수치, 유형별 점수는 재구성·검증).
+- 저장소: `docs/`에 plan2.md·result_gec2.md·log.md 복사(비밀 패턴 검사 통과), README에 결과 요약 표·문서 링크·gec2 구성 추가. 커밋 `be3e2ef` "Add larger-model comparison results and docs (plan2 steps 6-7)", push, itcerdo pull.
