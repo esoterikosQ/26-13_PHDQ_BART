@@ -80,6 +80,7 @@ def parse_common_args():
     parser.add_argument('--forced_eos_token_id', type=int, default=None, help='forced_eos_token_id for generate() (-1 = off)')
     # generation settings
     parser.add_argument('--repetition_penalty', type=float, default=None, help='repetition_penalty for generate()')
+    parser.add_argument('--attn_implementation', type=str, default=None, choices=['eager', 'sdpa'], help='BART attention 구현 (기본: transformers 기본값 = 4.44에서 sdpa; 논문 당시 transformers 4.0은 eager)')
     # logging settings
     parser.add_argument('--log_every_n_steps', type=int, default=50, help='do logging at every n steps.')
     # eval settings
@@ -167,7 +168,9 @@ def run_mode(args):
     # 특수 토큰·config를 매 실행마다 검사해 run 디렉토리에 기록한다 (tokenizer_setup.py).
     config = BartForConditionalGeneration.from_pretrained(BASE_MODEL).config
     check_model_config(config)
-    bart_model = BartForConditionalGeneration.from_pretrained(BASE_MODEL, config=config)
+    attn_kw = {'attn_implementation': args.attn_implementation} if args.attn_implementation else {}
+    bart_model = BartForConditionalGeneration.from_pretrained(BASE_MODEL, config=config, **attn_kw)
+    print(f"attention implementation: {bart_model.config._attn_implementation} ({type(bart_model.model.encoder.layers[0].self_attn).__name__})")
     tokenizer = load_tokenizer(BASE_MODEL, add_bos_eos=bool(args.add_bos_eos))
     run_dir = f'outputs/{args.data}/{args.run_id}'
     os.makedirs(run_dir, exist_ok=True)
