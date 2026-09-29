@@ -985,3 +985,47 @@ python3 -m gec2.summarize --json logs/gec2_summary_interim.json > logs/gec2_summ
 - `result_gec2.md` 작성(요약, 설정, 시나리오 1·2 3-seed 표, 크기·계열 비교, 논문 비교(시나리오 2 차이, 유형별 점수 재구성·검증), 추론 속도·학습 시간, 한계, 파일 위치). 수치 대조 중 요약의 "재현 KoBART 대비 6.8–10.3점"을 "6.0–10.3점"(lang8 +6.0)으로 정정.
 - `plan2.md` §5 단계 6 설명 갱신(속도는 환경 조건부 수치, 유형별 점수는 재구성·검증).
 - 저장소: `docs/`에 plan2.md·result_gec2.md·log.md 복사(비밀 패턴 검사 통과), README에 결과 요약 표·문서 링크·gec2 구성 추가. 커밋 `be3e2ef` "Add larger-model comparison results and docs (plan2 steps 6-7)", push, itcerdo pull.
+
+### 13:59 · 질문 검토: 재현 KoBART가 논문보다 높은 이유 [gsm]
+
+- 근거 재확인(기존 기록 + 논문 `papers/korean_gec.pdf`):
+    - 평가 동일: 저자 체크포인트 run 122(korean_learner seed 0)를 우리 파이프라인으로 채점 → 검증 GLEU 46.91 = 저자 기록 46.9129. self-GLEU가 논문과 소수점 둘째 자리까지 일치.
+    - 데이터 크기 동일: 논문 Table 1 문장 쌍 Kor-Learner 28,426 / Kor-Native 17,559 / Kor-Lang8 109,559, 우리 필터 후 train+val+test 28,427 / 17,560 / 109,560(각 1쌍 차이).
+    - 같은 seed 비교: 저자 run 122 테스트 GLEU 45.30 vs 재현 seed 0 45.38(+0.08). 논문 평균 45.06과의 차이(+0.62)는 우리 seed 1·2(45.59, 46.08)가 저자 나머지 seed보다 높은 데서 옴.
+    - 검증 3-seed 평균 차이(재현 − 논문 Table D.1): korean_learner 0.00, native +0.92, lang8 +0.31, union +0.43 / 테스트 차이: +0.62, +1.16, +1.17, +1.05 → 테스트 차이가 검증 차이보다 일관되게 큼.
+    - seed 편차 대비: 3-seed 평균 차이의 표준편차 ≈ √(2/3)·σ_seed(σ ≈ seed 범위/2)로 보면 korean_learner 약 1.9σ, native 약 1.1σ, union 약 1.4σ, lang8 약 4σ → lang8만 seed 운으로 설명하기 어려움. 7개 조합 모두 +방향.
+- 결론(잠정): 평가·데이터는 같고 차이는 학습 과정. 대부분은 seed 표본 차이(난수 흐름·수치 연산이 torch 1.7/V100과 달라 같은 seed라도 같은 run이 아님)로 설명되나, lang8 테스트와 전 조합 + 방향은 확인하지 못한 체계적 요인이 있을 수 있음. 확인 방법: 저자 spreadsheet의 다른 체크포인트(특히 lang8·union)를 받아 우리 파이프라인으로 채점.
+
+### 14:18 · native 정밀도 차이 조사: 저자 native 체크포인트 검증 [gsm, itcerdo]
+
+- **작업**: 사용자 지적 — 재현 native(시나리오 1) 테스트 정밀도가 논문보다 +5.0(80.34 vs 75.34), seed 운으로 보기 어렵다.
+- 재현 run의 **검증** P/R/F0.5(최고 epoch, 3-seed 평균) vs 논문 Table D.1: korean_learner 44.01/26.54/38.89 vs 43.95/26.35/38.76(일치), **native 80.18/59.34/74.92 vs 75.07/56.81/70.53(P +5.1)**, lang8 39.05/13.11/27.96 vs 37.69/12.64/26.96, 시나리오 2 korean_learner 52.21/24.12/42.31 vs 51.94/23.55/41.83, native 85.62/49.95/74.86 vs 83.95/48.55/73.25, lang8 37.52/12.80/27.04 vs 38.53/12.72/27.40 → 차이가 검증에서 이미 존재(모델 차이).
+- 저자 spreadsheet 재확인(`export?format=csv`): native 시나리오 1 검증 GLEU 68.22/70.62/69.27·P 74.94/74.12/76.14(평균 69.37/75.07 = 논문 D.1), 테스트 GLEU 65.89/66.12/63.21·P 75.12/74.51/69.89 → **테스트 평균 65.07/73.17로 논문 Table 6(67.24/75.34)과 다름**(저자 기록끼리 불일치).
+- 저자 native seed 0(run 123) 다운로드(`author_ckpt/123/`, yaml 1.5KB·ckpt 1.49GB, spreadsheet 링크 id 1dvw89…·1emzbe…). yaml은 run 122(korean_learner)와 데이터 경로 외 동일(batch 64, lr 3e-5, dropout 0.1, precision 32, max_len 128). 체크포인트: best val_gleu 68.2243(epoch 5), PL 1.1.
+- run 122와 같은 방식으로 변환(`author_123_converted.ckpt`, lm_head = shared) 후 레거시 파이프라인으로 채점:
+
+```bash
+python3 run.py --recipe legacy --data native --run_id author123_val --seed 0 --model_ckpt_path ../author_ckpt/123/author_123_converted.ckpt --batch_size 64 --max_seq_len 128
+python3 run.py --recipe legacy --eval_test --data native --run_id author123_test --seed 0 --model_ckpt_path ../author_ckpt/123/author_123_converted.ckpt --batch_size 64 --max_seq_len 128
+```
+
+- 결과: 검증 GLEU 68.22 · P 74.94 R 55.70 F0.5 70.10(**저자 기록과 완전 일치** → native도 평가 동일), 테스트 GLEU 66.55 · P 75.41 R 55.66 F0.5 70.42(저자 spreadsheet 테스트 65.89/75.12/54.67/69.89와 약간 다름).
+- 학습 데이터 동일성 확인(스크래치 `memo_check.py`, 실행 후 삭제, 결과 `logs/author_memo_check.txt`): 저자 모델의 우리 학습셋 teacher-forcing loss vs 검증셋 loss(앞 4,000쌍) — run 122 0.107 / 0.665, **run 123 0.002 / 0.284**(우리 학습셋을 외운 상태 → 같은 학습 데이터), 재현 seed 0 korean_learner 0.109 / 0.665, native 0.001 / 0.291.
+- 재현 native epoch별 검증 GLEU/P(`logs/native_repro_val_epoch_prec.txt`): GLEU는 epoch 3 이후 69–71로 평탄한데 P는 한 run 안에서 72.7–83.4로 크게 흔들리고 후반 epoch로 갈수록 오름. 같은 epoch 5에서 재현 P 78.5 / 78.4 / 81.4 vs 저자 seed 0 74.94.
+- 결론: 데이터·설정·평가가 같고 저자 native 모델만 정밀도가 낮음. native 정밀도는 GLEU가 평탄한 구간에서도 epoch마다 ±5 흔들리는 민감한 지표라 일부는 우연이지만, 같은 epoch에서도 재현 쪽이 3–6 높아 학습 과정의 체계적 차이가 남음(저자 run의 epoch별 기록이 없어 원인 특정 불가). 후보: 수치 환경(V100·torch 1.7·transformers 4.0 eager attention vs RTX 5090·torch 2.11·transformers 4.44 SDPA). 또 논문 native 테스트 수치 자체가 저자 기록과 달라, 논문 대비 차이의 일부는 논문 표의 문제.
+
+### 14:10–14:52 · native 정밀도: eager attention으로 재학습 [gsm, itcerdo]
+
+- **작업**: 사용자 결정 — attention 구현 차이(transformers 4.44 기본 SDPA vs 논문 당시 4.0 eager)가 native 정밀도 차이의 원인인지 확인.
+- 확인: 재현 학습은 `BartSdpaAttention`(config `_attn_implementation=sdpa`)으로 돌았음. `run.py`에 `--attn_implementation {eager,sdpa}` 추가(기본값은 기존과 같음, 로그에 실제 구현 출력). 커밋 `40986a7`, push, itcerdo pull.
+- 실행: `logs/run_eager_native.sh`(tools/run_one.sh와 같은 순서에 `--attn_implementation eager`만 추가), tmux `eager`, run_id `eager_dropout_seed{0,1,2}`, native 시나리오 1, lr 3e-5, batch 64, 10 epoch, legacy recipe. 로그 `logs/native_eager_dropout_seed*_{train,test,m2}.log`, 진행 `logs/runs.log`. 로그에서 `attention implementation: eager (BartAttention)` 확인. 14:21–14:50, run당 약 9.5분.
+- 결과(`logs/native_eager_vs_sdpa.txt`):
+
+| native 시나리오 1 | 검증 GLEU / P | 테스트 GLEU / P / R / F0.5 | 검증 P epoch 5 |
+| --- | --- | --- | --- |
+| 재현 SDPA (3-seed) | 70.29 / 80.18 | 68.40 / 80.34 / 58.31 / 74.69 | 79.42 |
+| 재현 **eager** (3-seed) | 70.53 / 79.17 | 68.79 / 79.24 / 58.41 / 73.96 | 78.50 |
+| 저자 (spreadsheet, 3-seed) | 69.37 / 75.07 | 65.07 / 73.17 / 54.24 / 68.39 | (seed 0 best=epoch 5: 74.94) |
+
+- eager seed별 테스트 P 77.94 / 79.07 / 80.70(SDPA 80.73 / 78.19 / 82.10). eager가 정밀도를 약 1점 낮추지만 seed 간 범위(약 3점) 안이고, 저자와의 차이 약 4–5점 중 대부분은 그대로 → **attention 구현은 주원인이 아님**. GLEU는 차이 없음.
+- 남는 후보: GPU·torch·cuBLAS 수치 경로(V100·torch 1.7 vs RTX 5090·torch 2.11), PyTorch Lightning 1.1 학습 루프의 확인되지 않은 동작 차이. RTX 5090에서는 torch 1.7을 쓸 수 없어 GPU로 직접 확인 불가.
