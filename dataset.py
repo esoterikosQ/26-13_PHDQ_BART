@@ -55,7 +55,7 @@ class GecDataModule(pl.LightningDataModule):
     def train_noshuffle_dataloader(self):
         return DataLoader(self.train, batch_size=self.args.batch_size, shuffle=False, num_workers=self.args.num_workers)
 
-
+ 
 class KoBARTGecDataset(Dataset):
     def __init__(self, filename, tok, max_len, pad_index = 0, ignore_index=-100, data_split_type='val', train_mode='normal'):
         super().__init__()
