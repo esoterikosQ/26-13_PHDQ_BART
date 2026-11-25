@@ -2,9 +2,9 @@
 
 이 저장소는 [soyoung97/Standard_Korean_GEC](https://github.com/soyoung97/Standard_Korean_GEC) (`dfe0af9`)을 기반으로, 논문 *Towards Standardizing Korean Grammatical Error Correction* (Yoon et al., ACL 2023)의 KoBART 실험(Table 6)을 최신 스택(torch 2.11 / PyTorch Lightning 2.6 / transformers 4.44, RTX 5090)에서 재현한 것이다. 7개 조합(시나리오 1: 4개 데이터셋, 시나리오 2: 3개 데이터셋) 모두 논문 수치를 재현했다(테스트 GLEU 3-seed 평균이 논문과 같거나 0.6–1.5 높음).
 
-- 결과와 체크포인트 목록: [`docs/result_kobart.md`](docs/result_kobart.md)
-- 계획과 근거: [`docs/plan.md`](docs/plan.md) (§3-6, §3-7이 재현의 핵심)
-- 시간순 작업 기록(명령·결과): [`docs/log.md`](docs/log.md)
+- 결과와 체크포인트 목록: [KoBART 재현 결과](result_kobart.md)
+- 계획과 근거: [재현 계획](plan.md) (§3-6, §3-7이 재현의 핵심)
+- 시간순 작업 기록(명령·결과): [작업 기록](log.md)
 
 ## 원본 대비 변경
 

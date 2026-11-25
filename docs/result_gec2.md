@@ -123,7 +123,7 @@ union 유형별 테스트 GLEU (시나리오 1, 3-seed 평균; 괄호는 해당 
 - **재현 KoBART → KoBART(gec2)**: 모든 유형이 오르고, WS(+18.5)·SHORT(+11.9)·WO(+12.5)·PART(+10.0)가 크게 오른다.
 - **큰 모델의 이득이 몰리는 곳**: 철자·형태·띄어쓰기다. KoBART(gec2) 대비 pko-t5-large는 SPELL +6.6, WS +5.9, PART +5.4, NOUN +5.1, END +4.6이다. 반면 WO +0.2, PUNCT +2.2, DEL +2.8, INS +2.9로 삽입·삭제·어순·문장부호는 적게 오른다.
 - **LLM과 한국어 T5의 차이**: kanana는 pko-t5-large보다 WS(+1.6)·WO(+2.2)·SHORT(+0.7)에서 앞선다. 반면 조사(PART −1.9)·어미(END −1.8)·수식어(MOD −2.2)·형용사(ADJ −2.7)에서는 뒤진다. 형태 교정은 한국어 전용으로 사전학습한 T5가 강하다.
-- 다른 데이터셋의 유형별 표는 itcerdo `logs/gec2_errtype.md`에 있다.
+- 다른 데이터셋의 유형별 표는 보관본의 `Standard_Korean_GEC/logs/gec2_errtype.md`에 있다(§8).
 
 ## 6. 추론 속도와 학습 시간
 
@@ -176,13 +176,13 @@ seq2seq는 10 epoch 고정이고, kanana는 조기 종료로 멈춘 epoch 수를
   - `queues/`: itcerdo 대기열
   - `slurm/`: Neuron 작업 스크립트
   - `NEURON.md`: Neuron 실행 안내
-- **seq2seq run**: itcerdo `~/projects/phdq_bart/Standard_Korean_GEC/outputs2/<모델>/<data>/{lr<lr>_seed<N>, s2_lr<union lr>_seed<N>}/`
-  - run 디렉토리 구성: `run_info.json`, `train_config*.json`, `epochs.jsonl`, `val/`, `test/`, `ckpt/best`
+- **seq2seq run**: 2026-11-25 itcerdo 보관본 `artifacts.tar`의 `Standard_Korean_GEC/outputs2/<모델>/<data>/{lr<lr>_seed<N>, s2_lr<union lr>_seed<N>}/`
+  - 보관본에는 설정, 학습 기록, `val/`, `test/` 등 당시 남아 있던 결과가 있다. `ckpt/best`의 학습 웨이트는 이 보관본이 아니라 이전 별도 백업 대상이었다.
 - **kanana run**: 저장소 `neuron_outputs/kanana-1.5-2.1b/...`(체크포인트 제외)
   - 체크포인트: Neuron `/scratch/r984a02/phdq_bart/26-13_PHDQ_BART/neuron_outputs/.../ckpt/best`
-  - itcerdo에는 시나리오 1 seed 0의 4개만 있다.
-- **집계 결과**: itcerdo `logs/gec2_summary_final.{md,json}`, `logs/gec2_errtype.md`, `logs/gec2_errtype/`, `logs/gec2_speed_final.json`
-- **재집계** (itcerdo 저장소 루트, `.venv-gec2`):
+  - itcerdo 보관본에는 `Standard_Korean_GEC/neuron_outputs/`의 결과만 있다. 확장 모델의 과거 별도 백업 검증 기록은 같은 tar의 `logs_backup/check_outputs2.log`, `logs_backup/check_neuron_outputs.log`를 참조한다. `base-models.tar`는 미세조정 결과가 아닌 사전학습 모델 캐시다.
+- **집계 결과**: `artifacts.tar`의 `Standard_Korean_GEC/` 기준 `logs/gec2_summary_final.{md,json}`, `logs/gec2_errtype.md`, `logs/gec2_errtype/`, `logs/gec2_speed_final.json`
+- **재집계** (결과를 복원한 저장소 루트, `.venv-gec2`; 속도 측정은 해당 학습 웨이트도 필요):
   ```bash
   python3 -m gec2.summarize          # 3-seed 표
   python3 -m gec2.errtype --validate # 논문 Table D.4 대조
